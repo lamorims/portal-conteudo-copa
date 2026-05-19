@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal Copa do Mundo 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #F7F8F9;
+  --bg2:      #FFFFFF;
+  --bg3:      #F1F2F4;
+  --bg4:      #EBECF0;
+  --border:   #DFE1E6;
+  --border2:  #C1C7D0;
+  --text:     #172B4D;
+  --text2:    #44526C;
+  --text3:    #7A8699;
+  --accent:   #0052CC;
+  --accent2:  #0065FF;
+  --accent-bg:#DEEBFF;
+  --red:      #DE350B;
+  --red-bg:   #FFEBE6;
+  --green:    #00875A;
+  --green-bg: #E3FCEF;
+  --amber:    #FF8B00;
+  --amber-bg: #FFFAE6;
+  --france:   #0052CC;
+  --usa:      #BF2600;
+  --r:  4px;
+  --r2: 6px;
+  --r3: 8px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.5;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- HEADER ---- */
+.site-header {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.site-logo {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: -0.01em;
+}
+.site-logo-badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 1px solid rgba(0,82,204,0.2);
+  padding: 2px 7px;
+  border-radius: 3px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.header-actions { display: flex; gap: 6px; align-items: center; }
+
+.btn {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  padding: 6px 12px;
+  border-radius: var(--r2);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--text2);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: background 0.1s, border-color 0.1s, color 0.1s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn:hover { background: var(--bg3); border-color: var(--border2); color: var(--text); }
+.btn:active { background: var(--bg4); }
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.btn-primary:hover { background: var(--accent2); border-color: var(--accent2); color: #fff; }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+.btn-danger { color: var(--red); border-color: rgba(222,53,11,0.3); }
+.btn-danger:hover { background: var(--red-bg); border-color: rgba(222,53,11,0.4); color: var(--red); }
+
+/* ---- LAYOUT ---- */
+.app { display: flex; height: calc(100vh - 56px); }
+
+/* ---- SIDEBAR ---- */
+.sidebar {
+  width: 248px;
+  min-width: 248px;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.sidebar-scroll { overflow-y: auto; flex: 1; padding: 8px; }
+.sidebar-scroll::-webkit-scrollbar { width: 4px; }
+.sidebar-scroll::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 2px; }
+
+.sidebar-group-label {
+  padding: 12px 8px 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.sidebar-group-label:first-child { padding-top: 4px; }
+
+.game-item {
+  padding: 8px 10px;
+  border-radius: var(--r2);
+  cursor: pointer;
+  transition: background 0.1s;
+  margin-bottom: 1px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.game-item:hover { background: var(--bg3); }
+.game-item.active { background: var(--accent-bg); }
+.game-item-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+}
+.game-item.active .game-item-title { color: var(--accent); }
+.game-item-meta {
+  font-size: 11px;
+  color: var(--text3);
+  display: flex;
+  gap: 6px;
+}
+
+/* ---- MAIN ---- */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+.section-nav {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 1.5rem;
+  display: flex;
+  height: 44px;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+.nav-tab {
+  padding: 0 14px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text3);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.12s, border-color 0.12s;
+}
+.nav-tab:hover { color: var(--text2); }
+.nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.nav-tab svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+.content-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  background: var(--bg);
+}
+.content-area::-webkit-scrollbar { width: 6px; }
+.content-area::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
+
+/* ---- GAME HERO ---- */
+.game-hero {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  padding: 1.75rem 2rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.team-block { text-align: center; min-width: 120px; }
+.team-flag { font-size: 44px; line-height: 1; margin-bottom: 8px; }
+.team-name { font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+.team-country { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+.vs-block { text-align: center; }
+.vs-label { font-size: 10px; font-weight: 700; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+.vs-date { font-size: 18px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+.vs-time { font-size: 13px; color: var(--text3); margin-top: 3px; }
+.vs-stadium { font-size: 12px; color: var(--text2); margin-top: 6px; }
+.badge-comp {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 3px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  border: 1px solid rgba(0,82,204,0.15);
+  margin-top: 8px;
+}
+
+/* ---- ACTION BAR ---- */
+.action-bar {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+/* ---- CARDS ---- */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+}
+.card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.card-title svg { color: var(--accent); }
+
+/* ---- LINEUP ---- */
+.lineup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.lineup-team-header {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.player-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+.player-row:last-child { border-bottom: none; }
+.player-row:hover { background: var(--bg3); border-radius: var(--r); margin: 0 -6px; padding: 6px 6px; }
+.player-num {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text3);
+  min-width: 22px;
+  text-align: right;
+}
+.player-name { font-size: 13px; font-weight: 500; color: var(--text); flex: 1; }
+.pos-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 3px;
+  letter-spacing: 0.03em;
+}
+.pos-gk { background: var(--amber-bg); color: var(--amber); }
+.pos-df { background: var(--accent-bg); color: var(--accent); }
+.pos-mf { background: var(--green-bg); color: var(--green); }
+.pos-fw { background: var(--red-bg); color: var(--red); }
+
+/* ---- ATHLETES PHOTO GRID ---- */
+.athletes-photo-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 4px 0;
+}
+.athlete-photo-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  width: 80px;
+}
+.athlete-photo-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2.5px solid var(--border);
+  overflow: hidden;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  background: var(--bg4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text3);
+}
+.athlete-photo-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.athlete-photo-item:hover .athlete-photo-circle {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-bg);
+  transform: translateY(-2px);
+}
+.athlete-photo-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text2);
+  text-align: center;
+  line-height: 1.3;
+  max-width: 80px;
+  word-break: break-word;
+}
+.athlete-photo-pos {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-top: -3px;
+}
+
+/* ---- ATHLETE MODAL (centralizado) ---- */
+.athlete-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(9,30,66,0.54);
+  z-index: 400;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.athlete-modal-overlay.open { display: flex; }
+.athlete-modal-box {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 12px 48px rgba(9,30,66,0.22);
+  position: relative;
+}
+.athlete-modal-box::-webkit-scrollbar { width: 4px; }
+.athlete-modal-box::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 2px; }
+.athlete-modal-header {
+  padding: 1.5rem 1.5rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  position: relative;
+}
+.athlete-modal-close {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text3);
+  padding: 3px 8px;
+  transition: background 0.1s;
+  font-family: inherit;
+  font-weight: 600;
+}
+.athlete-modal-close:hover { background: var(--bg4); color: var(--text); }
+.athlete-modal-photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid var(--border);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--bg4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text3);
+}
+.athlete-modal-photo img { width: 100%; height: 100%; object-fit: cover; }
+.athlete-modal-name { font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; margin-bottom: 3px; }
+.athlete-modal-sub { font-size: 12px; color: var(--text3); margin-bottom: 8px; }
+.athlete-modal-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.athlete-modal-body { padding: 1.25rem 1.5rem; }
+.athlete-modal-actions {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+}
+
+/* keep old .athlete-tag for reuse */
+.athlete-tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: var(--bg4);
+  color: var(--text3);
+  border: 1px solid var(--border);
+}
+
+/* ---- ATHLETE PANEL (legado — mantido para compatibilidade) ---- */
+.athlete-detail { display: none; }
+
+/* ---- DETAIL SECTIONS (usadas no modal do atleta) ---- */
+.detail-section { margin-bottom: 1.25rem; }
+.detail-section-title {
+  font-size: 10px; font-weight: 700;
+  color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border);
+}
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.stat-item {
+  background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r2);
+  padding: 10px 12px;
+}
+.stat-label { font-size: 11px; font-weight: 600; color: var(--text3); margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.04em; }
+.stat-value { font-size: 22px; font-weight: 700; color: var(--text); }
+.detail-text { font-size: 13px; color: var(--text2); line-height: 1.7; }
+.curiosity-item {
+  padding: 9px 12px; background: var(--bg3); border-radius: var(--r2);
+  border-left: 3px solid var(--accent); margin-bottom: 6px;
+  font-size: 13px; color: var(--text2); line-height: 1.5;
+}
+
+/* ---- PRESSKIT ---- */
+.presskit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+.presskit-card {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r3);
+  padding: 1rem; display: flex; flex-direction: column; gap: 10px;
+  transition: border-color 0.12s;
+}
+.presskit-card:hover { border-color: var(--border2); }
+.presskit-icon {
+  width: 40px; height: 40px; border-radius: var(--r2); border: 1px solid var(--border);
+  background: var(--bg3); display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+}
+.presskit-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.presskit-meta { font-size: 11px; color: var(--text3); }
+.presskit-actions { display: flex; gap: 6px; margin-top: auto; }
+
+/* ---- LINEUP HISTORY ---- */
+.lineup-section-title {
+  font-size: 13px; font-weight: 700; color: var(--text);
+  margin: 1.5rem 0 1rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.lineup-section-title:first-child { margin-top: 0; }
+.lineup-history-game {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+.lineup-history-header {
+  padding: 10px 14px;
+  background: var(--bg4);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+}
+.lineup-history-header:hover { background: var(--border); }
+.lineup-history-label {
+  font-size: 12px; font-weight: 700; color: var(--text);
+  display: flex; align-items: center; gap: 8px;
+}
+.lineup-history-result {
+  font-size: 11px; font-weight: 700;
+  padding: 2px 8px; border-radius: 3px;
+}
+.result-w { background: var(--green-bg); color: var(--green); }
+.result-d { background: var(--amber-bg); color: var(--amber); }
+.result-l { background: var(--red-bg); color: var(--red); }
+.lineup-history-body { padding: 1rem 1.25rem; display: none; }
+.lineup-history-body.open { display: block; }
+.lineup-chevron { font-size: 11px; color: var(--text3); transition: transform 0.15s; }
+.lineup-chevron.open { transform: rotate(180deg); }
+
+
+.notes-block {
+  background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r2);
+  padding: 1rem 1.25rem; font-size: 13px; color: var(--text2); line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+/* ---- EMPTY STATES ---- */
+.empty-state {
+  text-align: center; padding: 4rem 2rem; color: var(--text3);
+}
+.empty-state .icon { font-size: 36px; margin-bottom: 12px; }
+.empty-state h3 { font-size: 16px; font-weight: 700; color: var(--text2); margin-bottom: 6px; }
+.empty-state p { font-size: 13px; max-width: 300px; margin: 0 auto 16px; }
+
+/* ---- MODAL ---- */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(9,30,66,0.54); z-index: 300;
+  align-items: flex-start; justify-content: center;
+  padding: 3rem 1rem; overflow-y: auto;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--r3); padding: 1.5rem; width: 100%; max-width: 600px;
+  box-shadow: 0 8px 32px rgba(9,30,66,0.18);
+  position: relative;
+}
+.modal-title {
+  font-size: 18px; font-weight: 700; color: var(--text);
+  margin-bottom: 1.25rem; letter-spacing: -0.01em;
+}
+.form-section { margin-bottom: 1.25rem; }
+.form-section-title {
+  font-size: 11px; font-weight: 700;
+  color: var(--text3); letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border);
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.form-group { margin-bottom: 10px; }
+.form-label {
+  display: block; font-size: 12px; font-weight: 600; color: var(--text2);
+  margin-bottom: 4px;
+}
+input[type=text], input[type=date], input[type=time], textarea, select {
+  width: 100%; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px;
+  background: var(--bg2); border: 1.5px solid var(--border); border-radius: var(--r2);
+  color: var(--text); padding: 7px 10px; transition: border 0.12s;
+}
+input::placeholder, textarea::placeholder { color: var(--text3); }
+input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(0,82,204,0.12); }
+textarea { resize: vertical; min-height: 80px; }
+select option { background: var(--bg2); color: var(--text); }
+.upload-zone {
+  border: 1.5px dashed var(--border2); border-radius: var(--r2);
+  padding: 1.25rem; text-align: center; cursor: pointer; transition: all 0.15s;
+  background: var(--bg3);
+}
+.upload-zone:hover { background: var(--bg4); border-color: var(--accent); }
+.upload-zone p { font-size: 13px; color: var(--text3); margin-top: 6px; }
+.file-item {
+  display: flex; align-items: center; gap: 8px; padding: 6px 10px;
+  background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r2);
+  margin-top: 6px; font-size: 12px; color: var(--text);
+}
+.file-item-name { flex: 1; }
+.file-remove { cursor: pointer; color: var(--text3); }
+.file-remove:hover { color: var(--red); }
+.modal-actions {
+  display: flex; gap: 8px; justify-content: flex-end;
+  margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border);
+}
+
+/* ---- ATHLETE MODAL ---- */
+.athlete-modal { max-width: 540px; }
+.photo-upload-wrap { position: relative; cursor: pointer; }
+.photo-upload-wrap input { display: none; }
+.photo-preview { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
+
+/* ---- OVERLAY ---- */
+.overlay-bg {
+  display: none; position: fixed; inset: 0;
+  background: rgba(9,30,66,0.4); z-index: 190;
+}
+.overlay-bg.open { display: block; }
+
+/* ---- SECTION LABEL ---- */
+.section-label {
+  font-size: 11px; font-weight: 700;
+  color: var(--text3); letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* ---- SCROLLBAR ---- */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .athlete-detail { width: 100%; }
+  .lineup-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-logo">
+    ⚽ Portal Copa 2026
+    <span class="site-logo-badge">Imprensa</span>
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-sm" onclick="openAthleteModal(null, null)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Novo atleta
+    </button>
+    <button class="btn btn-primary btn-sm" onclick="openGameModal(null)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Novo jogo
+    </button>
+  </div>
+</header>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-scroll" id="sidebar-games"></div>
+  </aside>
+
+  <main class="main">
+    <nav class="section-nav" id="section-nav" style="display:none">
+      <div class="nav-tab active" data-tab="info" onclick="switchTab('info', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Jogo
+      </div>
+      <div class="nav-tab" data-tab="lineup" onclick="switchTab('lineup', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Últimas escalações
+      </div>
+      <div class="nav-tab" data-tab="athletes" onclick="switchTab('athletes', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Atletas
+      </div>
+      <div class="nav-tab" data-tab="presskit" onclick="switchTab('presskit', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+        Presskit
+      </div>
+    </nav>
+    <div class="content-area" id="content-area">
+      <div class="empty-state" id="empty-main">
+        <div class="icon">🏟️</div>
+        <h3>Nenhum jogo selecionado</h3>
+        <p>Selecione um jogo na barra lateral ou adicione um novo jogo para começar.</p>
+        <button class="btn btn-primary" onclick="openGameModal(null)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Adicionar primeiro jogo
+        </button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ATHLETE PROFILE MODAL (centralizado) -->
+<div class="athlete-modal-overlay" id="athlete-profile-overlay" onclick="handleAthleteOverlayClick(event)">
+  <div class="athlete-modal-box" id="athlete-modal-box">
+    <div class="athlete-modal-header">
+      <div class="athlete-modal-photo" id="amp-photo"></div>
+      <div style="flex:1;padding-right:2rem">
+        <div class="athlete-modal-name" id="amp-name"></div>
+        <div class="athlete-modal-sub" id="amp-sub"></div>
+        <div class="athlete-modal-tags" id="amp-tags"></div>
+      </div>
+      <button class="athlete-modal-close" onclick="closeAthleteProfileModal()">✕</button>
+    </div>
+    <div class="athlete-modal-body" id="amp-body"></div>
+    <div class="athlete-modal-actions" id="amp-actions"></div>
+  </div>
+</div>
+
+<!-- ATHLETE PANEL legado (oculto) -->
+<div id="overlay-bg"></div>
+<div class="athlete-detail" id="athlete-panel">
+  <div class="athlete-detail-header">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase">Perfil do atleta</div>
+      <button class="btn btn-sm" onclick="closeAthletePanel()">✕</button>
+    </div>
+    <div style="display:flex;gap:14px;align-items:flex-start">
+      <div class="athlete-detail-avatar" id="panel-avatar"></div>
+      <div>
+        <div class="athlete-detail-name" id="panel-name"></div>
+        <div class="athlete-detail-sub" id="panel-sub"></div>
+        <div style="margin-top:8px;display:flex;gap:4px;flex-wrap:wrap" id="panel-tags"></div>
+      </div>
+    </div>
+  </div>
+  <div class="athlete-detail-body" id="panel-body"></div>
+</div>
+
+<!-- GAME MODAL -->
+<div class="modal-overlay" id="game-modal">
+  <div class="modal">
+    <div class="modal-title" id="game-modal-title">Adicionar jogo</div>
+
+    <div class="form-section">
+      <div class="form-section-title">Identificação</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Time da casa</label>
+          <input type="text" id="gf-home" placeholder="ex: França">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Time visitante</label>
+          <input type="text" id="gf-away" placeholder="ex: Senegal">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Bandeira (casa)</label>
+          <input type="text" id="gf-home-flag" placeholder="🇫🇷" maxlength="4">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Bandeira (visitante)</label>
+          <input type="text" id="gf-away-flag" placeholder="🇸🇳" maxlength="4">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Competição</label>
+          <input type="text" id="gf-comp" placeholder="ex: Copa do Mundo 2026">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Grupo</label>
+          <input type="text" id="gf-group" placeholder="ex: Grupo I">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Data</label>
+          <input type="date" id="gf-date">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Horário (Brasília)</label>
+          <input type="text" id="gf-time" placeholder="ex: 16h (Brasília)">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Estádio</label>
+          <input type="text" id="gf-stadium" placeholder="ex: MetLife Stadium">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cidade / Sede</label>
+          <input type="text" id="gf-city" placeholder="ex: Nova York / NJ">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Categoria na barra lateral</label>
+        <select id="gf-team-tag">
+          <option value="other">Outro</option>
+          <option value="france">França</option>
+          <option value="usa">EUA / USMNT</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Escalação — time da casa</div>
+      <div class="form-group">
+        <label class="form-label">Um jogador por linha: Nº Nome POS</label>
+        <textarea id="gf-lineup-home" rows="8" placeholder="1 Maignan  GOL&#10;5 Upamecano  ZAG&#10;10 Mbappé  ATA"></textarea>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Escalação — time visitante</div>
+      <div class="form-group">
+        <textarea id="gf-lineup-away" rows="6" placeholder="1 Mendy  GOL&#10;3 Koulibaly  ZAG..."></textarea>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Contexto para reportagem</div>
+      <div class="form-group">
+        <label class="form-label">Observações, desfalques, contexto, transmissão</label>
+        <textarea id="gf-notes" rows="5" placeholder="Desfalques, histórico de confrontos, transmissão, contexto da competição..."></textarea>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Últimas 3 escalações — time da casa</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:10px">Adversário, placar, resultado e escalação dos 3 jogos mais recentes.</div>
+      <div id="history-home-fields">
+        <div class="history-match-block">
+          <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em">Jogo 1 — mais recente</div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Adversário</label><input type="text" id="hh-op-0" placeholder="ex: Bélgica"></div>
+            <div class="form-group"><label class="form-label">Placar</label><input type="text" id="hh-sc-0" placeholder="ex: 2-1"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Resultado</label><select id="hh-re-0"><option value="">—</option><option value="V">Vitória</option><option value="E">Empate</option><option value="D">Derrota</option></select></div>
+            <div class="form-group"><label class="form-label">Competição</label><input type="text" id="hh-co-0" placeholder="ex: Liga das Nações"></div>
+          </div>
+          <div class="form-group"><label class="form-label">Escalação (Nº Nome POS por linha)</label><textarea id="hh-li-0" rows="5" placeholder="1 Maignan  GOL&#10;5 Upamecano  ZAG&#10;10 Mbappé  ATA"></textarea></div>
+        </div>
+        <hr style="border:none;border-top:1px solid var(--border);margin:14px 0">
+        <div class="history-match-block">
+          <div style="font-size:11px;font-weight:700;color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em">Jogo 2</div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Adversário</label><input type="text" id="hh-op-1" placeholder=""></div>
+            <div class="form-group"><label class="form-label">Placar</label><input type="text" id="hh-sc-1" placeholder=""></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Resultado</label><select id="hh-re-1"><option value="">—</option><option value="V">Vitória</option><option value="E">Empate</option><option value="D">Derrota</option></select></div>
+            <div class="form-group"><label class="form-label">Competição</label><input type="text" id="hh-co-1" placeholder=""></div>
+          </div>
+          <div class="form-group"><label class="form-label">Escalação</label><textarea id="hh-li-1" rows="5" placeholder=""></textarea></div>
+        </div>
+        <hr style="border:none;border-top:1px solid var(--border);margin:14px 0">
+        <div class="history-match-block">
+          <div style="font-size:11px;font-weight:700;color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em">Jogo 3</div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Adversário</label><input type="text" id="hh-op-2" placeholder=""></div>
+            <div class="form-group"><label class="form-label">Placar</label><input type="text" id="hh-sc-2" placeholder=""></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Resultado</label><select id="hh-re-2"><option value="">—</option><option value="V">Vitória</option><option value="E">Empate</option><option value="D">Derrota</option></select></div>
+            <div class="form-group"><label class="form-label">Competição</label><input type="text" id="hh-co-2" placeholder=""></div>
+          </div>
+          <div class="form-group"><label class="form-label">Escalação</label><textarea id="hh-li-2" rows="5" placeholder=""></textarea></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Últimas 3 escalações — time visitante</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:10px">Mesmo formato acima.</div>
+      <div id="history-away-fields">
+        <div class="history-match-block">
+          <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em">Jogo 1 — mais recente</div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Adversário</label><input type="text" id="ha-op-0" placeholder="ex: Marrocos"></div>
+            <div class="form-group"><label class="form-label">Placar</label><input type="text" id="ha-sc-0" placeholder="ex: 1-0"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Resultado</label><select id="ha-re-0"><option value="">—</option><option value="V">Vitória</option><option value="E">Empate</option><option value="D">Derrota</option></select></div>
+            <div class="form-group"><label class="form-label">Competição</label><input type="text" id="ha-co-0" placeholder="ex: Copa Africana"></div>
+          </div>
+          <div class="form-group"><label class="form-label">Escalação (Nº Nome POS por linha)</label><textarea id="ha-li-0" rows="5" placeholder="1 Mendy  GOL&#10;3 Koulibaly  ZAG"></textarea></div>
+        </div>
+        <hr style="border:none;border-top:1px solid var(--border);margin:14px 0">
+        <div class="history-match-block">
+          <div style="font-size:11px;font-weight:700;color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em">Jogo 2</div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Adversário</label><input type="text" id="ha-op-1" placeholder=""></div>
+            <div class="form-group"><label class="form-label">Placar</label><input type="text" id="ha-sc-1" placeholder=""></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Resultado</label><select id="ha-re-1"><option value="">—</option><option value="V">Vitória</option><option value="E">Empate</option><option value="D">Derrota</option></select></div>
+            <div class="form-group"><label class="form-label">Competição</label><input type="text" id="ha-co-1" placeholder=""></div>
+          </div>
+          <div class="form-group"><label class="form-label">Escalação</label><textarea id="ha-li-1" rows="5" placeholder=""></textarea></div>
+        </div>
+        <hr style="border:none;border-top:1px solid var(--border);margin:14px 0">
+        <div class="history-match-block">
+          <div style="font-size:11px;font-weight:700;color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em">Jogo 3</div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Adversário</label><input type="text" id="ha-op-2" placeholder=""></div>
+            <div class="form-group"><label class="form-label">Placar</label><input type="text" id="ha-sc-2" placeholder=""></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Resultado</label><select id="ha-re-2"><option value="">—</option><option value="V">Vitória</option><option value="E">Empate</option><option value="D">Derrota</option></select></div>
+            <div class="form-group"><label class="form-label">Competição</label><input type="text" id="ha-co-2" placeholder=""></div>
+          </div>
+          <div class="form-group"><label class="form-label">Escalação</label><textarea id="ha-li-2" rows="5" placeholder=""></textarea></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Presskit e documentos</div>
+      <div class="upload-zone" onclick="document.getElementById('gf-files').click()">
+        <div style="font-size:22px">📎</div>
+        <p>Clique para fazer upload de PDFs, imagens ou documentos</p>
+        <input type="file" id="gf-files" multiple accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" onchange="handleGameFiles(this)" style="display:none">
+      </div>
+      <div id="gf-file-list"></div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn" onclick="closeGameModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveGame()">Salvar jogo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ATHLETE FORM MODAL -->
+<div class="modal-overlay" id="athlete-modal">
+  <div class="modal athlete-modal">
+    <div class="modal-title" id="athlete-modal-title">Adicionar atleta</div>
+
+    <div class="form-section">
+      <div class="form-section-title">Identificação</div>
+      <div style="display:flex;gap:14px;align-items:flex-start">
+        <div>
+          <label class="form-label">Foto</label>
+          <div class="photo-upload-wrap" onclick="document.getElementById('af-photo').click()">
+            <img id="af-photo-preview" class="photo-preview" src="" alt="" style="display:none">
+            <div id="af-photo-placeholder" style="width:80px;height:80px;border-radius:50%;background:var(--bg4);border:2px dashed var(--border2);display:flex;align-items:center;justify-content:center;font-size:26px;cursor:pointer;">👤</div>
+            <input type="file" id="af-photo" accept="image/*" onchange="handleAthletePhoto(this)" style="display:none">
+          </div>
+        </div>
+        <div style="flex:1">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Nome completo</label>
+              <input type="text" id="af-name" placeholder="ex: Kylian Mbappé">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nº camisa</label>
+              <input type="text" id="af-num" placeholder="10">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Posição</label>
+              <select id="af-pos">
+                <option value="">Selecione</option>
+                <option value="GOL">Goleiro</option>
+                <option value="ZAG">Zagueiro</option>
+                <option value="LAT">Lateral</option>
+                <option value="VOL">Volante</option>
+                <option value="MED">Meia</option>
+                <option value="ATA">Atacante</option>
+                <option value="ALD">Ponta</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Seleção</label>
+              <input type="text" id="af-country" placeholder="ex: França">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Clube atual</label>
+          <input type="text" id="af-club" placeholder="ex: Real Madrid">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Idade</label>
+          <input type="text" id="af-age" placeholder="ex: 27">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Estatísticas — pela seleção</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Jogos pela seleção</label>
+          <input type="text" id="af-caps" placeholder="ex: 85">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Gols pela seleção</label>
+          <input type="text" id="af-goals" placeholder="ex: 49">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Assistências pela seleção</label>
+          <input type="text" id="af-assists" placeholder="ex: 28">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Copas disputadas</label>
+          <input type="text" id="af-wcs" placeholder="ex: 3 (2018, 2022, 2026)">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Estatísticas — pelo clube (temporada atual)</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:10px">Preencher com dados do PDF quando disponível.</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Jogos pelo clube</label>
+          <input type="text" id="af-club-games" placeholder="ex: 42">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Gols pelo clube</label>
+          <input type="text" id="af-club-goals" placeholder="ex: 31">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Assistências pelo clube</label>
+          <input type="text" id="af-club-assists" placeholder="ex: 10">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Temporada de referência</label>
+          <input type="text" id="af-club-season" placeholder="ex: 2025/26">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Perfil e reportagem</div>
+      <div class="form-group">
+        <label class="form-label">Biografia / histórico</label>
+        <textarea id="af-bio" rows="4" placeholder="Formação, carreira, prêmios, trajetória..."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Curiosidades para reportagem (uma por linha)</label>
+        <textarea id="af-curiosities" rows="4" placeholder="Campeão mundial em 2018 com apenas 19 anos&#10;Capitão desde os 24 anos"></textarea>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Vínculo com jogo</div>
+      <div class="form-group">
+        <label class="form-label">Associar ao jogo</label>
+        <select id="af-game-link">
+          <option value="">Nenhum jogo específico</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Time</label>
+        <select id="af-side">
+          <option value="home">Time da casa</option>
+          <option value="away">Time visitante</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn" onclick="closeAthleteModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveAthlete()">Salvar atleta</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---- DATA ----
+let games = [];
+let athletes = [];
+let activeGameIdx = -1;
+let activeTab = 'info';
+let editingGameIdx = -1;
+let editingAthleteIdx = -1;
+let pendingGameFiles = [];
+let pendingAthletePhotoUrl = null;
+let pendingAthletePhotoName = null;
+
+// ---- INITIAL DATA: jogos pré-carregados ----
+const initialGames = [
+  {
+    home: 'Estados Unidos', away: 'Paraguai',
+    homeFlag: '🇺🇸', awayFlag: '🇵🇾',
+    comp: 'Copa do Mundo 2026', group: 'Grupo D',
+    date: '2026-06-12', time: '22h (Brasília)',
+    stadium: 'SoFi Stadium', city: 'Los Angeles, EUA',
+    teamTag: 'usa',
+    lineupHome: [
+      {num:'1',name:'Matt Turner',pos:'GOL'},
+      {num:'4',name:'DeAndre Yedlin',pos:'LAD'},
+      {num:'5',name:'Tim Ream',pos:'ZAG'},
+      {num:'3',name:'Chris Richards',pos:'ZAG'},
+      {num:'12',name:'Antonee Robinson',pos:'LAE'},
+      {num:'6',name:'Yunus Musah',pos:'VOL'},
+      {num:'8',name:'Tyler Adams',pos:'VOL'},
+      {num:'7',name:'Gio Reyna',pos:'MED'},
+      {num:'11',name:'Timothy Weah',pos:'ALD'},
+      {num:'9',name:'Ricardo Pepi',pos:'ATA'},
+      {num:'10',name:'Christian Pulisic',pos:'MED'},
+    ],
+    lineupAway: [
+      {num:'1',name:'Antony Silva',pos:'GOL'},
+      {num:'2',name:'Gustavo Gómez',pos:'ZAG'},
+      {num:'3',name:'Fabián Balbuena',pos:'ZAG'},
+      {num:'4',name:'Júnior Alonso',pos:'ZAG'},
+      {num:'16',name:'Óscar Romero',pos:'MED'},
+      {num:'7',name:'Miguel Almirón',pos:'MED'},
+      {num:'10',name:'Mathías Villasanti',pos:'VOL'},
+      {num:'8',name:'Andrés Cubas',pos:'VOL'},
+      {num:'11',name:'Antonio Sanabria',pos:'ATA'},
+      {num:'9',name:'Julio Enciso',pos:'ATA'},
+      {num:'17',name:'Kaku',pos:'ALD'},
+    ],
+    notes: 'EUA estreia na Copa do Mundo 2026 como anfitrião no grupo D, ao lado de Paraguai, Austrália e Turquia.\n\nOs EUA têm a pressão de jogar diante de sua torcida no SoFi Stadium, em Los Angeles. Christian Pulisic é o grande destaque e capitão da equipe.\n\nO Paraguai chega com Miguel Almirón como referência no meio-campo. A seleção guarani buscará a classificação pela segunda fase pela primeira vez desde 2010.\n\nTransmissão no Brasil: CazéTV, SporTV.',
+    files: []
+  },
+  {
+    home: 'França', away: 'Senegal',
+    homeFlag: '🇫🇷', awayFlag: '🇸🇳',
+    comp: 'Copa do Mundo 2026', group: 'Grupo I',
+    date: '2026-06-16', time: '16h (Brasília)',
+    stadium: 'MetLife Stadium', city: 'Nova York / Nova Jersey, EUA',
+    teamTag: 'france',
+    lineupHome: [
+      {num:'1',name:'Mike Maignan',pos:'GOL'},
+      {num:'5',name:'Dayot Upamecano',pos:'ZAG'},
+      {num:'12',name:'William Saliba',pos:'ZAG'},
+      {num:'22',name:'Theo Hernandez',pos:'LAE'},
+      {num:'2',name:'Malo Gusto',pos:'LAD'},
+      {num:'8',name:'Aurélien Tchouaméni',pos:'VOL'},
+      {num:'6',name:'N\'Golo Kanté',pos:'MED'},
+      {num:'14',name:'Adrien Rabiot',pos:'MED'},
+      {num:'7',name:'Ousmane Dembélé',pos:'ALD'},
+      {num:'9',name:'Marcus Thuram',pos:'ATA'},
+      {num:'10',name:'Kylian Mbappé',pos:'ATA'},
+    ],
+    lineupAway: [
+      {num:'1',name:'Édouard Mendy',pos:'GOL'},
+      {num:'3',name:'Kalidou Koulibaly',pos:'ZAG'},
+      {num:'5',name:'Pape Abou Cissé',pos:'ZAG'},
+      {num:'12',name:'Ismail Jakobs',pos:'LAE'},
+      {num:'2',name:'Formose Mendy',pos:'LAD'},
+      {num:'6',name:'Cheikhou Kouyaté',pos:'VOL'},
+      {num:'8',name:'Idrissa Gueye',pos:'VOL'},
+      {num:'10',name:'Sadio Mané',pos:'ATA'},
+      {num:'7',name:'Ismaïla Sarr',pos:'ALD'},
+      {num:'11',name:'Boulaye Dia',pos:'ATA'},
+      {num:'22',name:'Lamine Camara',pos:'MED'},
+    ],
+    notes: 'França estreia no Grupo I contra o Senegal, um duelo com forte histórico: as duas seleções se enfrentaram na Copa de 2002, quando o Senegal venceu a então campeã França por 1 a 0 na fase de grupos.\n\nA França chega como vice-campeã de 2022 e líder do ranking FIFA, em busca do tricampeonato. Será a última Copa de Didier Deschamps como treinador.\n\nKylian Mbappé retorna ao palco onde disputou a final de 2022. Marcus Thuram e Ousmane Dembélé são as outras peças ofensivas.\n\nTransmissão no Brasil: SBT, Globo, GeTV, N Sports, SporTV e CazéTV.',
+    files: []
+  },
+  {
+    home: 'França', away: 'Iraque',
+    homeFlag: '🇫🇷', awayFlag: '🇮🇶',
+    comp: 'Copa do Mundo 2026', group: 'Grupo I',
+    date: '2026-06-22', time: '18h (Brasília)',
+    stadium: 'Lincoln Financial Field', city: 'Filadélfia, EUA',
+    teamTag: 'france',
+    lineupHome: [
+      {num:'1',name:'Mike Maignan',pos:'GOL'},
+      {num:'5',name:'Dayot Upamecano',pos:'ZAG'},
+      {num:'12',name:'William Saliba',pos:'ZAG'},
+      {num:'22',name:'Theo Hernandez',pos:'LAE'},
+      {num:'2',name:'Malo Gusto',pos:'LAD'},
+      {num:'8',name:'Aurélien Tchouaméni',pos:'VOL'},
+      {num:'6',name:'N\'Golo Kanté',pos:'MED'},
+      {num:'14',name:'Adrien Rabiot',pos:'MED'},
+      {num:'7',name:'Ousmane Dembélé',pos:'ALD'},
+      {num:'9',name:'Marcus Thuram',pos:'ATA'},
+      {num:'10',name:'Kylian Mbappé',pos:'ATA'},
+    ],
+    lineupAway: [],
+    notes: 'Segunda rodada do Grupo I. O Iraque se classificou via repescagem intercontinental e faz sua história na Copa do Mundo 2026.\n\nA França deve manter o time base e pode confirmar classificação com vitória.\n\nTransmissão no Brasil: CazéTV.',
+    files: []
+  },
+  {
+    home: 'Noruega', away: 'França',
+    homeFlag: '🇳🇴', awayFlag: '🇫🇷',
+    comp: 'Copa do Mundo 2026', group: 'Grupo I',
+    date: '2026-06-26', time: '16h (Brasília)',
+    stadium: 'Gillette Stadium', city: 'Boston (Foxborough), EUA',
+    teamTag: 'france',
+    lineupHome: [],
+    lineupAway: [
+      {num:'1',name:'Mike Maignan',pos:'GOL'},
+      {num:'5',name:'Dayot Upamecano',pos:'ZAG'},
+      {num:'12',name:'William Saliba',pos:'ZAG'},
+      {num:'22',name:'Theo Hernandez',pos:'LAE'},
+      {num:'2',name:'Malo Gusto',pos:'LAD'},
+      {num:'8',name:'Aurélien Tchouaméni',pos:'VOL'},
+      {num:'6',name:'N\'Golo Kanté',pos:'MED'},
+      {num:'14',name:'Adrien Rabiot',pos:'MED'},
+      {num:'7',name:'Ousmane Dembélé',pos:'ALD'},
+      {num:'9',name:'Marcus Thuram',pos:'ATA'},
+      {num:'10',name:'Kylian Mbappé',pos:'ATA'},
+    ],
+    notes: 'Terceira e última rodada do Grupo I da França. A Noruega tem Erling Haaland como grande estrela e chega com chances reais de classificação.\n\nO confronto pode definir a liderança do grupo. Haaland x Mbappé é o duelo do jogo.\n\nTransmissão no Brasil: CazéTV.',
+    files: []
+  },
+];
+
+const initialAthletes = [
+  {
+    name: 'Kylian Mbappé', num: '10', pos: 'ATA', country: 'França', club: 'Real Madrid', age: '27',
+    caps: '85', goals: '49', assists: '28', wcs: '3 (2018, 2022, 2026)',
+    bio: 'Kylian Mbappé nasceu em 20 de dezembro de 1998 em Bondy, França. Surgiu no Monaco com 16 anos e desde 2017 é destaque no Paris Saint-Germain, clube que deixou em 2024 para realizar o sonho de jogar no Real Madrid. É o atual capitão da seleção francesa e o maior artilheiro da história da França em Copas do Mundo.',
+    curiosities: 'Campeão mundial em 2018 com apenas 19 anos — segundo jogador mais jovem a marcar em uma final\nVice-campeão em 2022 — marcou hat-trick na final contra a Argentina, o maior feito individual em finais de Copa\nMaior artilheiro da história das Eliminatórias europeias para a Copa\nSe classificou em 2024 como o segundo jogador mais bem pago do mundo\nFala cinco idiomas: francês, espanhol, inglês, português e árabe',
+    photoUrl: null, gameLink: 1, side: 'home'
+  },
+  {
+    name: 'Marcus Thuram', num: '9', pos: 'ATA', country: 'França', club: 'Inter de Milão', age: '27',
+    caps: '40', goals: '18', assists: '10', wcs: '2 (2022, 2026)',
+    bio: 'Marcus Thuram, filho do lendário Lilian Thuram, destaca-se pela capacidade física e técnica no ataque. Após passagens por Guingamp e Borussia Mönchengladbach, tornou-se peça-chave na Inter de Milão e na seleção francesa.',
+    curiosities: 'Filho de Lilian Thuram, um dos maiores defensores da história da França\nNa Copa de 2022, marcou dois gols no empate contra a Sérvia\nArtilheiro da Serie A italiana na temporada 2024/25',
+    photoUrl: null, gameLink: 1, side: 'home'
+  },
+  {
+    name: 'N\'Golo Kanté', num: '6', pos: 'MED', country: 'França', club: 'Al-Ittihad', age: '35',
+    caps: '60', goals: '2', assists: '5', wcs: '2 (2018, 2026)',
+    bio: 'Considerado um dos melhores médios volantes da história do futebol. Campeão mundial com a França em 2018. Após passagem pelo Chelsea, onde venceu a Champions League, transferiu-se para o futebol saudita em 2023. Retorna à Copa na sua possível despedida.',
+    curiosities: 'Campeão mundial em 2018 e campeão europeu em 2021 com o Chelsea\nNomeado para o top 3 da Bola de Ouro em 2017 e 2021\nFicou fora da Copa de 2022 por lesão — sua presença em 2026 é valiosa para o elenco',
+    photoUrl: null, gameLink: 1, side: 'home'
+  },
+  {
+    name: 'Christian Pulisic', num: '10', pos: 'MED', country: 'EUA', club: 'AC Milan', age: '26',
+    caps: '68', goals: '30', assists: '22', wcs: '2 (2022, 2026)',
+    bio: 'Capitão e principal jogador dos Estados Unidos. Nascido em Pennsylvania, Pulisic cresceu em Hershey e começou sua carreira no Borussia Dortmund, tornando-se o americano mais valioso da história. No AC Milan, tem sido titular absoluto.',
+    curiosities: 'Primeiro americano a marcar em eliminatórias de Copa desde 2017\nIdolo absoluto dos fãs americanos — chamado de "Captain America"\nJogou a Copa de 2022 e agora joga a primeiro Copa em casa, diante do próprio povo',
+    photoUrl: null, gameLink: 0, side: 'home'
+  },
+];
+
+// ---- LOAD DATA ----
+function loadData() {
+  try {
+    const g = localStorage.getItem('cwc2026_games');
+    const a = localStorage.getItem('cwc2026_athletes');
+    if (g) games = JSON.parse(g);
+    else games = JSON.parse(JSON.stringify(initialGames));
+    if (a) athletes = JSON.parse(a);
+    else athletes = JSON.parse(JSON.stringify(initialAthletes));
+  } catch(e) {
+    games = JSON.parse(JSON.stringify(initialGames));
+    athletes = JSON.parse(JSON.stringify(initialAthletes));
+  }
+}
+function saveData() {
+  try {
+    localStorage.setItem('cwc2026_games', JSON.stringify(games));
+    localStorage.setItem('cwc2026_athletes', JSON.stringify(athletes));
+  } catch(e) {}
+}
+
+// ---- SIDEBAR ----
+function renderSidebar() {
+  const el = document.getElementById('sidebar-games');
+  if (!games.length) {
+    el.innerHTML = '<div style="padding:20px 12px;font-size:13px;color:var(--text3);text-align:center">Nenhum jogo cadastrado</div>';
+    return;
+  }
+
+  // Ordenar por data cronológica (mais próximo primeiro); jogos sem data vão para o final
+  const sorted = games
+    .map((g, i) => ({ g, i }))
+    .sort((a, b) => {
+      if (!a.g.date && !b.g.date) return 0;
+      if (!a.g.date) return 1;
+      if (!b.g.date) return -1;
+      return a.g.date.localeCompare(b.g.date);
+    });
+
+  let html = '<div class="sidebar-group-label">⚽ Jogos</div>';
+  sorted.forEach(({ g, i }) => {
+    const active = i === activeGameIdx ? 'active' : '';
+    const dateObj = g.date ? new Date(g.date + 'T12:00:00') : null;
+    const dateStr = dateObj ? dateObj.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) : '';
+    const weekday = dateObj ? dateObj.toLocaleDateString('pt-BR', { weekday: 'short' }) : '';
+    html += `<div class="game-item ${active}" onclick="selectGame(${i})">
+      <div class="game-item-title">${g.homeFlag||''} ${g.home} × ${g.away} ${g.awayFlag||''}</div>
+      <div class="game-item-meta">
+        ${dateStr ? `<span>${weekday} ${dateStr}</span>` : ''}
+        ${g.time ? `<span>${g.time.replace(' (Brasília)','').replace('(Brasília)','')}</span>` : ''}
+      </div>
+    </div>`;
+  });
+  el.innerHTML = html;
+}
+
+// ---- SELECT GAME ----
+function selectGame(i) {
+  activeGameIdx = i;
+  activeTab = 'info';
+  renderSidebar();
+  renderMain();
+}
+
+// ---- RENDER MAIN ----
+function renderMain() {
+  const nav = document.getElementById('section-nav');
+  const content = document.getElementById('content-area');
+  const empty = document.getElementById('empty-main');
+
+  if (activeGameIdx < 0) {
+    nav.style.display = 'none';
+    empty.style.display = 'block';
+    content.innerHTML = '';
+    content.appendChild(empty);
+    return;
+  }
+
+  nav.style.display = 'flex';
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === activeTab));
+
+  const g = games[activeGameIdx];
+  let html = '';
+
+  if (activeTab === 'info') html = renderInfo(g);
+  else if (activeTab === 'lineup') html = renderLineup(g);
+  else if (activeTab === 'athletes') html = renderAthletes(g);
+  else if (activeTab === 'presskit') html = renderPresskit(g);
+
+  content.innerHTML = html;
+}
+
+function switchTab(tab, el) {
+  activeTab = tab;
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderMain();
+}
+
+// ---- INFO TAB ----
+function renderInfo(g) {
+  const date = g.date ? new Date(g.date + 'T12:00:00').toLocaleDateString('pt-BR', {weekday:'long',day:'2-digit',month:'long',year:'numeric'}) : '';
+  let html = `
+    <div class="game-hero">
+      <div class="team-block">
+        <div class="team-flag">${g.homeFlag||'🏳'}</div>
+        <div class="team-name">${g.home}</div>
+        <div class="team-country">Casa</div>
+      </div>
+      <div class="vs-block">
+        <div class="vs-label">vs</div>
+        <div class="vs-date">${date}</div>
+        <div class="vs-time">${g.time||''}</div>
+        <div class="vs-stadium">${g.stadium||''} · ${g.city||''}</div>
+        <div class="badge-comp">${g.comp||''} ${g.group ? '— '+g.group : ''}</div>
+      </div>
+      <div class="team-block">
+        <div class="team-flag">${g.awayFlag||'🏳'}</div>
+        <div class="team-name">${g.away}</div>
+        <div class="team-country">Visitante</div>
+      </div>
+    </div>
+    <div class="action-bar">
+      <button class="btn btn-sm" onclick="openGameModal(${activeGameIdx})">✏️ Editar jogo</button>
+      <button class="btn btn-sm btn-danger" onclick="deleteGame(${activeGameIdx})">🗑 Remover</button>
+      <button class="btn btn-sm btn-primary" onclick="openAthleteModal(null, ${activeGameIdx})">+ Adicionar atleta</button>
+    </div>`;
+
+  if (g.notes) {
+    html += `<div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Contexto e observações
+      </div>
+      <div class="notes-block">${escHtml(g.notes)}</div>
+    </div>`;
+  }
+  return html;
+}
+
+// ---- LINEUP TAB ----
+function renderLineup(g) {
+  const posClass = p => {
+    if (!p) return '';
+    const u = p.toUpperCase();
+    if (u==='GOL') return 'pos-gk';
+    if (['ZAG','LAT','LAD','LAE'].includes(u)) return 'pos-df';
+    if (['VOL','MED','MED-VOL'].includes(u)) return 'pos-mf';
+    return 'pos-fw';
+  };
+
+  const renderSide = (lineup, teamName, flag) => {
+    if (!lineup || !lineup.length)
+      return `<div style="font-size:13px;color:var(--text3);padding:.75rem 0">Nenhum jogador cadastrado para ${escHtml(teamName)}</div>`;
+    return lineup.map(p => `
+      <div class="player-row">
+        <span class="player-num">${p.num||'—'}</span>
+        <span class="player-name">${escHtml(p.name)}</span>
+        ${p.pos ? `<span class="pos-badge ${posClass(p.pos)}">${p.pos}</span>` : ''}
+      </div>`).join('');
+  };
+
+  // ---- ESCALAÇÃO PROVÁVEL ----
+  let html = `<div class="card">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Escalação provável
+    </div>
+    <div class="lineup-grid">
+      <div>
+        <div class="lineup-team-header">${g.homeFlag||''} ${escHtml(g.home)}</div>
+        ${renderSide(g.lineupHome, g.home, g.homeFlag)}
+      </div>
+      <div>
+        <div class="lineup-team-header">${g.awayFlag||''} ${escHtml(g.away)}</div>
+        ${renderSide(g.lineupAway, g.away, g.awayFlag)}
+      </div>
+    </div>
+  </div>`;
+
+  // ---- ÚLTIMAS 3 ESCALAÇÕES (home) ----
+  const buildHistoryCard = (histArr, teamName, teamFlag) => {
+    if (!histArr || !histArr.length) return '';
+    let s = `<div class="lineup-section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Últimas escalações — ${teamFlag||''} ${escHtml(teamName)}
+    </div>`;
+    histArr.slice(0,3).forEach((match, mi) => {
+      const resultClass = match.result === 'V' ? 'result-w' : match.result === 'E' ? 'result-d' : match.result === 'D' ? 'result-l' : '';
+      const resultLabel = match.result === 'V' ? 'Vitória' : match.result === 'E' ? 'Empate' : match.result === 'D' ? 'Derrota' : '';
+      const bodyId = `lhb-${teamName.replace(/\s/g,'')}-${mi}`;
+      const chevId = `lhc-${teamName.replace(/\s/g,'')}-${mi}`;
+      s += `<div class="lineup-history-game">
+        <div class="lineup-history-header" onclick="toggleHistoryBody('${bodyId}','${chevId}')">
+          <div class="lineup-history-label">
+            ${match.opponent ? `× ${escHtml(match.opponent)}` : `Jogo ${mi+1}`}
+            ${match.score ? `<span style="color:var(--text3);font-weight:400">${escHtml(match.score)}</span>` : ''}
+            ${match.comp ? `<span style="color:var(--text3);font-weight:400;font-size:11px">${escHtml(match.comp)}</span>` : ''}
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            ${resultLabel ? `<span class="lineup-history-result ${resultClass}">${resultLabel}</span>` : ''}
+            <span class="lineup-chevron" id="${chevId}">▼</span>
+          </div>
+        </div>
+        <div class="lineup-history-body" id="${bodyId}">
+          ${renderSide(match.lineup, teamName, '')}
+        </div>
+      </div>`;
+    });
+    return s;
+  };
+
+  const hasHomeHistory = g.historyHome && g.historyHome.length;
+  const hasAwayHistory = g.historyAway && g.historyAway.length;
+
+  if (hasHomeHistory || hasAwayHistory) {
+    html += `<div class="card" style="margin-top:1rem">`;
+    html += buildHistoryCard(g.historyHome, g.home, g.homeFlag);
+    if (hasHomeHistory && hasAwayHistory) html += `<div style="height:1rem"></div>`;
+    html += buildHistoryCard(g.historyAway, g.away, g.awayFlag);
+    html += `</div>`;
+  } else {
+    html += `<div class="card" style="margin-top:1rem">
+      <div style="text-align:center;padding:1.5rem;color:var(--text3)">
+        <div style="font-size:24px;margin-bottom:8px">📋</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:4px">Histórico de escalações não cadastrado</div>
+        <div style="font-size:12px">Edite o jogo para adicionar as últimas 3 escalações de cada time.</div>
+      </div>
+    </div>`;
+  }
+
+  return html;
+}
+
+function toggleHistoryBody(bodyId, chevId) {
+  const body = document.getElementById(bodyId);
+  const chev = document.getElementById(chevId);
+  if (!body) return;
+  body.classList.toggle('open');
+  if (chev) chev.classList.toggle('open');
+}
+
+// ---- ATHLETES TAB ----
+function renderAthletes(g) {
+  const gameAthletes = athletes.filter(a => a.gameLink === activeGameIdx || a.gameLink === null || a.gameLink === undefined || a.gameLink === '');
+  const homeAthletes = gameAthletes.filter(a => a.side === 'home' || !a.side);
+  const awayAthletes = gameAthletes.filter(a => a.side === 'away');
+
+  const posClass = p => {
+    if (!p) return '';
+    const u = p.toUpperCase();
+    if (u==='GOL') return 'pos-gk';
+    if (['ZAG','LAT','LAD','LAE'].includes(u)) return 'pos-df';
+    if (['VOL','MED','MED-VOL'].includes(u)) return 'pos-mf';
+    return 'pos-fw';
+  };
+
+  let html = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem">
+    <div style="font-size:13px;color:var(--text2);font-weight:500">${gameAthletes.length} atleta(s) cadastrado(s)</div>
+    <button class="btn btn-primary btn-sm" onclick="openAthleteModal(null, ${activeGameIdx})">+ Atleta</button>
+  </div>`;
+
+  const renderGroup = (list, label, flag) => {
+    if (!list.length) return '';
+    let s = `<div class="section-label">${flag||''} ${label}</div>`;
+    s += `<div class="athletes-photo-grid">`;
+    list.forEach(a => {
+      const realIdx = athletes.indexOf(a);
+      const initials = a.name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+      // Pegar primeiro nome para label curto
+      const shortName = a.name.split(' ')[0];
+      s += `<div class="athlete-photo-item" onclick="openAthleteProfileModal(${realIdx})">
+        <div class="athlete-photo-circle">
+          ${a.photoUrl ? `<img src="${a.photoUrl}" alt="${escHtml(a.name)}">` : initials}
+        </div>
+        <div class="athlete-photo-name">${escHtml(shortName)}</div>
+        ${a.pos ? `<span class="athlete-photo-pos ${posClass(a.pos)} athlete-tag">${a.pos}</span>` : ''}
+      </div>`;
+    });
+    s += '</div>';
+    return `<div style="margin-bottom:2rem" class="card">${s}</div>`;
+  };
+
+  if (!gameAthletes.length) {
+    html += `<div class="empty-state"><div class="icon">👤</div><h3>Nenhum atleta cadastrado</h3><p>Adicione atletas convocados para facilitar a cobertura jornalística.</p></div>`;
+  } else {
+    html += renderGroup(homeAthletes, g.home, g.homeFlag);
+    html += renderGroup(awayAthletes, g.away, g.awayFlag);
+  }
+  return html;
+}
+
+// ---- PRESSKIT TAB ----
+function renderPresskit(g) {
+  if (!g.files || !g.files.length) {
+    return `<div class="empty-state">
+      <div class="icon">📎</div>
+      <h3>Nenhum documento no presskit</h3>
+      <p>Adicione PDFs, imagens e documentos para facilitar a cobertura.</p>
+      <button class="btn btn-primary" onclick="openGameModal(${activeGameIdx})">✏️ Editar jogo e adicionar arquivos</button>
+    </div>`;
+  }
+  let html = `<div class="card"><div class="card-title">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+    Presskit e documentos
+  </div><div class="presskit-grid">`;
+  g.files.forEach((f, fi) => {
+    const icon = f.type === 'application/pdf' ? '📄' : f.type && f.type.startsWith('image') ? '🖼' : '📎';
+    const size = f.size ? (f.size > 1024*1024 ? (f.size/1024/1024).toFixed(1)+' MB' : Math.round(f.size/1024)+' KB') : '';
+    html += `<div class="presskit-card">
+      <div style="display:flex;gap:12px;align-items:center">
+        <div class="presskit-icon">${icon}</div>
+        <div>
+          <div class="presskit-name">${escHtml(f.name)}</div>
+          ${size ? `<div class="presskit-meta">${size}</div>` : ''}
+        </div>
+      </div>
+      <div class="presskit-actions">
+        ${f.url ? `<a href="${f.url}" target="_blank" class="btn btn-sm">👁 Visualizar</a>
+        <a href="${f.url}" download="${escHtml(f.name)}" class="btn btn-sm">⬇ Baixar</a>` : ''}
+      </div>
+    </div>`;
+  });
+  html += '</div></div>';
+  return html;
+}
+
+// ---- ATHLETE PROFILE MODAL (centralizado) ----
+function openAthleteProfileModal(idx) {
+  const a = athletes[idx];
+  if (!a) return;
+
+  const initials = a.name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+
+  // Foto
+  document.getElementById('amp-photo').innerHTML = a.photoUrl
+    ? `<img src="${a.photoUrl}" alt="${escHtml(a.name)}">`
+    : initials;
+
+  // Nome e sub
+  document.getElementById('amp-name').textContent = a.name;
+  document.getElementById('amp-sub').textContent = [a.club, a.country, a.age ? a.age+' anos' : ''].filter(Boolean).join(' · ');
+
+  // Tags
+  const posClass = p => {
+    if (!p) return '';
+    const u = p.toUpperCase();
+    if (u==='GOL') return 'pos-gk';
+    if (['ZAG','LAT','LAD','LAE'].includes(u)) return 'pos-df';
+    if (['VOL','MED','MED-VOL'].includes(u)) return 'pos-mf';
+    return 'pos-fw';
+  };
+  document.getElementById('amp-tags').innerHTML = [
+    a.pos ? `<span class="athlete-tag ${posClass(a.pos)}">${a.pos}</span>` : '',
+    a.num ? `<span class="athlete-tag">#${a.num}</span>` : '',
+  ].join('');
+
+  // Body
+  let body = '';
+
+  if (a.caps || a.goals || a.assists || a.wcs) {
+    body += `<div class="detail-section"><div class="detail-section-title">Pela seleção</div><div class="stat-grid">`;
+    if (a.caps) body += `<div class="stat-item"><div class="stat-label">Jogos</div><div class="stat-value">${escHtml(a.caps)}</div></div>`;
+    if (a.goals) body += `<div class="stat-item"><div class="stat-label">Gols</div><div class="stat-value">${escHtml(a.goals)}</div></div>`;
+    if (a.assists) body += `<div class="stat-item"><div class="stat-label">Assist.</div><div class="stat-value">${escHtml(a.assists)}</div></div>`;
+    if (a.wcs) body += `<div class="stat-item"><div class="stat-label">Copas</div><div class="stat-value" style="font-size:13px;font-weight:700">${escHtml(a.wcs)}</div></div>`;
+    body += `</div></div>`;
+  }
+
+  const hasClubStats = a.clubGames || a.clubGoals || a.clubAssists;
+  if (hasClubStats) {
+    const seasonLabel = a.clubSeason ? ` <span style="font-weight:400;font-size:10px;color:var(--text3)">${escHtml(a.clubSeason)}</span>` : '';
+    body += `<div class="detail-section"><div class="detail-section-title">Pelo clube${seasonLabel}</div><div class="stat-grid">`;
+    if (a.clubGames) body += `<div class="stat-item"><div class="stat-label">Jogos</div><div class="stat-value">${escHtml(a.clubGames)}</div></div>`;
+    if (a.clubGoals) body += `<div class="stat-item"><div class="stat-label">Gols</div><div class="stat-value">${escHtml(a.clubGoals)}</div></div>`;
+    if (a.clubAssists) body += `<div class="stat-item"><div class="stat-label">Assist.</div><div class="stat-value">${escHtml(a.clubAssists)}</div></div>`;
+    body += `</div></div>`;
+  }
+  if (a.bio) {
+    body += `<div class="detail-section"><div class="detail-section-title">Histórico</div><div class="detail-text">${escHtml(a.bio)}</div></div>`;
+  }
+  if (a.curiosities) {
+    body += `<div class="detail-section"><div class="detail-section-title">Curiosidades para reportagem</div>`;
+    a.curiosities.split('\n').filter(c=>c.trim()).forEach(c => {
+      body += `<div class="curiosity-item">${escHtml(c)}</div>`;
+    });
+    body += `</div>`;
+  }
+  document.getElementById('amp-body').innerHTML = body;
+
+  // Actions
+  document.getElementById('amp-actions').innerHTML = `
+    <button class="btn btn-sm" onclick="closeAthleteProfileModal();openAthleteModal(${idx}, null)">✏️ Editar</button>
+    <button class="btn btn-sm btn-danger" onclick="closeAthleteProfileModal();deleteAthlete(${idx})">🗑 Remover</button>`;
+
+  document.getElementById('athlete-profile-overlay').classList.add('open');
+}
+function closeAthleteProfileModal() {
+  document.getElementById('athlete-profile-overlay').classList.remove('open');
+}
+function handleAthleteOverlayClick(e) {
+  if (e.target === document.getElementById('athlete-profile-overlay')) closeAthleteProfileModal();
+}
+
+// ---- ATHLETE PANEL (legado, mantido para compatibilidade) ----
+function openAthletePanel(idx) { openAthleteProfileModal(idx); }
+function closeAthletePanel() { closeAthleteProfileModal(); }
+
+// ---- GAME MODAL ----
+function openGameModal(idx) {
+  editingGameIdx = idx;
+  pendingGameFiles = idx !== null && games[idx] ? [...(games[idx].files||[])] : [];
+  const g = idx !== null && games[idx] ? games[idx] : {};
+
+  document.getElementById('game-modal-title').textContent = idx !== null ? 'Editar jogo' : 'Adicionar jogo';
+  document.getElementById('gf-home').value = g.home||'';
+  document.getElementById('gf-away').value = g.away||'';
+  document.getElementById('gf-home-flag').value = g.homeFlag||'';
+  document.getElementById('gf-away-flag').value = g.awayFlag||'';
+  document.getElementById('gf-comp').value = g.comp||'';
+  document.getElementById('gf-group').value = g.group||'';
+  document.getElementById('gf-date').value = g.date||'';
+  document.getElementById('gf-time').value = g.time||'';
+  document.getElementById('gf-stadium').value = g.stadium||'';
+  document.getElementById('gf-city').value = g.city||'';
+  document.getElementById('gf-team-tag').value = g.teamTag||'other';
+  document.getElementById('gf-lineup-home').value = g.lineupHome ? g.lineupHome.map(p=>[p.num,p.name,p.pos].filter(Boolean).join(' ')).join('\n') : '';
+  document.getElementById('gf-lineup-away').value = g.lineupAway ? g.lineupAway.map(p=>[p.num,p.name,p.pos].filter(Boolean).join(' ')).join('\n') : '';
+  document.getElementById('gf-notes').value = g.notes||'';
+
+  // Preencher histórico — casa
+  for (let i = 0; i < 3; i++) {
+    const m = (g.historyHome && g.historyHome[i]) || {};
+    document.getElementById(`hh-op-${i}`).value = m.opponent||'';
+    document.getElementById(`hh-sc-${i}`).value = m.score||'';
+    document.getElementById(`hh-re-${i}`).value = m.result||'';
+    document.getElementById(`hh-co-${i}`).value = m.comp||'';
+    document.getElementById(`hh-li-${i}`).value = m.lineup ? m.lineup.map(p=>[p.num,p.name,p.pos].filter(Boolean).join(' ')).join('\n') : '';
+  }
+  // Preencher histórico — visitante
+  for (let i = 0; i < 3; i++) {
+    const m = (g.historyAway && g.historyAway[i]) || {};
+    document.getElementById(`ha-op-${i}`).value = m.opponent||'';
+    document.getElementById(`ha-sc-${i}`).value = m.score||'';
+    document.getElementById(`ha-re-${i}`).value = m.result||'';
+    document.getElementById(`ha-co-${i}`).value = m.comp||'';
+    document.getElementById(`ha-li-${i}`).value = m.lineup ? m.lineup.map(p=>[p.num,p.name,p.pos].filter(Boolean).join(' ')).join('\n') : '';
+  }
+  renderGameFileList();
+  document.getElementById('game-modal').classList.add('open');
+}
+function closeGameModal() { document.getElementById('game-modal').classList.remove('open'); }
+
+function handleGameFiles(input) {
+  Array.from(input.files).forEach(f => {
+    pendingGameFiles.push({name:f.name, size:f.size, type:f.type, url:URL.createObjectURL(f)});
+  });
+  renderGameFileList();
+}
+function renderGameFileList() {
+  document.getElementById('gf-file-list').innerHTML = pendingGameFiles.map((f,i) =>
+    `<div class="file-item"><span class="file-item-name">${escHtml(f.name)}</span><span class="file-remove" onclick="removeGameFile(${i})">✕</span></div>`
+  ).join('');
+}
+function removeGameFile(i) { pendingGameFiles.splice(i,1); renderGameFileList(); }
+
+function parseLineup(text) {
+  if (!text.trim()) return [];
+  return text.trim().split('\n').filter(l=>l.trim()).map(line => {
+    const parts = line.trim().split(/\s+/);
+    let num='', pos='', name='';
+    if (!isNaN(parts[0]) && parts.length > 1) { num = parts.shift(); }
+    if (parts.length > 1) {
+      const last = parts[parts.length-1];
+      if (last.length <= 4 && last === last.toUpperCase() && isNaN(last)) { pos = parts.pop(); }
+    }
+    name = parts.join(' ');
+    return {num, name, pos};
+  });
+}
+
+function saveGame() {
+  const home = document.getElementById('gf-home').value.trim();
+  const away = document.getElementById('gf-away').value.trim();
+  if (!home || !away) { alert('Preencha os times da casa e visitante.'); return; }
+  const g = {
+    home, away,
+    homeFlag: document.getElementById('gf-home-flag').value.trim(),
+    awayFlag: document.getElementById('gf-away-flag').value.trim(),
+    comp: document.getElementById('gf-comp').value.trim(),
+    group: document.getElementById('gf-group').value.trim(),
+    date: document.getElementById('gf-date').value,
+    time: document.getElementById('gf-time').value.trim(),
+    stadium: document.getElementById('gf-stadium').value.trim(),
+    city: document.getElementById('gf-city').value.trim(),
+    teamTag: document.getElementById('gf-team-tag').value,
+    lineupHome: parseLineup(document.getElementById('gf-lineup-home').value),
+    lineupAway: parseLineup(document.getElementById('gf-lineup-away').value),
+    notes: document.getElementById('gf-notes').value.trim(),
+    historyHome: [0,1,2].map(i => ({
+      opponent: document.getElementById(`hh-op-${i}`).value.trim(),
+      score:    document.getElementById(`hh-sc-${i}`).value.trim(),
+      result:   document.getElementById(`hh-re-${i}`).value,
+      comp:     document.getElementById(`hh-co-${i}`).value.trim(),
+      lineup:   parseLineup(document.getElementById(`hh-li-${i}`).value)
+    })).filter(m => m.opponent || m.lineup.length),
+    historyAway: [0,1,2].map(i => ({
+      opponent: document.getElementById(`ha-op-${i}`).value.trim(),
+      score:    document.getElementById(`ha-sc-${i}`).value.trim(),
+      result:   document.getElementById(`ha-re-${i}`).value,
+      comp:     document.getElementById(`ha-co-${i}`).value.trim(),
+      lineup:   parseLineup(document.getElementById(`ha-li-${i}`).value)
+    })).filter(m => m.opponent || m.lineup.length),
+    files: [...pendingGameFiles]
+  };
+  if (editingGameIdx !== null && editingGameIdx >= 0) {
+    games[editingGameIdx] = g;
+  } else {
+    games.push(g);
+    activeGameIdx = games.length - 1;
+  }
+  saveData();
+  closeGameModal();
+  renderSidebar();
+  renderMain();
+}
+function deleteGame(i) {
+  if (!confirm('Remover este jogo?')) return;
+  games.splice(i, 1);
+  athletes.forEach(a => { if (a.gameLink === i) a.gameLink = null; else if (a.gameLink > i) a.gameLink--; });
+  activeGameIdx = games.length ? 0 : -1;
+  saveData();
+  renderSidebar();
+  renderMain();
+}
+
+// ---- ATHLETE MODAL ----
+function openAthleteModal(athleteIdx, gameIdx) {
+  editingAthleteIdx = athleteIdx;
+  pendingAthletePhotoUrl = null;
+  const a = athleteIdx !== null && athletes[athleteIdx] ? athletes[athleteIdx] : {};
+
+  document.getElementById('athlete-modal-title').textContent = athleteIdx !== null ? 'Editar atleta' : 'Adicionar atleta';
+  document.getElementById('af-name').value = a.name||'';
+  document.getElementById('af-num').value = a.num||'';
+  document.getElementById('af-pos').value = a.pos||'';
+  document.getElementById('af-country').value = a.country||'';
+  document.getElementById('af-club').value = a.club||'';
+  document.getElementById('af-age').value = a.age||'';
+  document.getElementById('af-caps').value = a.caps||'';
+  document.getElementById('af-goals').value = a.goals||'';
+  document.getElementById('af-assists').value = a.assists||'';
+  document.getElementById('af-wcs').value = a.wcs||'';
+  document.getElementById('af-club-games').value = a.clubGames||'';
+  document.getElementById('af-club-goals').value = a.clubGoals||'';
+  document.getElementById('af-club-assists').value = a.clubAssists||'';
+  document.getElementById('af-club-season').value = a.clubSeason||'';
+  document.getElementById('af-bio').value = a.bio||'';
+  document.getElementById('af-curiosities').value = a.curiosities||'';
+
+  const preview = document.getElementById('af-photo-preview');
+  const placeholder = document.getElementById('af-photo-placeholder');
+  if (a.photoUrl) { preview.src = a.photoUrl; preview.style.display='block'; placeholder.style.display='none'; }
+  else { preview.style.display='none'; placeholder.style.display='flex'; }
+  pendingAthletePhotoUrl = a.photoUrl || null;
+
+  const sel = document.getElementById('af-game-link');
+  sel.innerHTML = '<option value="">Nenhum jogo específico</option>' +
+    games.map((g,i) => `<option value="${i}">${g.homeFlag||''} ${g.home} × ${g.away} ${g.awayFlag||''} (${g.date||''})</option>`).join('');
+  const linkVal = a.gameLink !== undefined && a.gameLink !== null ? String(a.gameLink) : (gameIdx !== null ? String(gameIdx) : '');
+  sel.value = linkVal;
+  document.getElementById('af-side').value = a.side||'home';
+
+  document.getElementById('athlete-modal').classList.add('open');
+}
+function closeAthleteModal() { document.getElementById('athlete-modal').classList.remove('open'); }
+
+function handleAthletePhoto(input) {
+  if (!input.files[0]) return;
+  const url = URL.createObjectURL(input.files[0]);
+  pendingAthletePhotoUrl = url;
+  const preview = document.getElementById('af-photo-preview');
+  const placeholder = document.getElementById('af-photo-placeholder');
+  preview.src = url; preview.style.display='block'; placeholder.style.display='none';
+}
+
+function saveAthlete() {
+  const name = document.getElementById('af-name').value.trim();
+  if (!name) { alert('Preencha o nome do atleta.'); return; }
+  const gl = document.getElementById('af-game-link').value;
+  const a = {
+    name, num: document.getElementById('af-num').value.trim(),
+    pos: document.getElementById('af-pos').value,
+    country: document.getElementById('af-country').value.trim(),
+    club: document.getElementById('af-club').value.trim(),
+    age: document.getElementById('af-age').value.trim(),
+    caps: document.getElementById('af-caps').value.trim(),
+    goals: document.getElementById('af-goals').value.trim(),
+    assists: document.getElementById('af-assists').value.trim(),
+    wcs: document.getElementById('af-wcs').value.trim(),
+    clubGames: document.getElementById('af-club-games').value.trim(),
+    clubGoals: document.getElementById('af-club-goals').value.trim(),
+    clubAssists: document.getElementById('af-club-assists').value.trim(),
+    clubSeason: document.getElementById('af-club-season').value.trim(),
+    bio: document.getElementById('af-bio').value.trim(),
+    curiosities: document.getElementById('af-curiosities').value.trim(),
+    photoUrl: pendingAthletePhotoUrl,
+    gameLink: gl !== '' ? parseInt(gl) : null,
+    side: document.getElementById('af-side').value
+  };
+  if (editingAthleteIdx !== null && athletes[editingAthleteIdx]) {
+    athletes[editingAthleteIdx] = a;
+  } else {
+    athletes.push(a);
+  }
+  saveData();
+  closeAthleteModal();
+  closeAthletePanel();
+  if (activeTab === 'athletes') renderMain();
+}
+
+function deleteAthlete(i) {
+  if (!confirm('Remover este atleta?')) return;
+  athletes.splice(i, 1);
+  saveData();
+  closeAthletePanel();
+  if (activeTab === 'athletes') renderMain();
+}
+
+function escHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+document.getElementById('game-modal').addEventListener('click', e => { if(e.target===e.currentTarget) closeGameModal(); });
+document.getElementById('athlete-modal').addEventListener('click', e => { if(e.target===e.currentTarget) closeAthleteModal(); });
+
+loadData();
+renderSidebar();
+if (games.length) selectGame(0);
+</script>
+</body>
+</html>
