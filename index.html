@@ -316,9 +316,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 7px;
+  gap: 5px;
   cursor: pointer;
-  width: 80px;
+  width: 84px;
 }
 .athlete-photo-circle {
   width: 72px;
@@ -334,6 +334,7 @@ body {
   font-size: 20px;
   font-weight: 700;
   color: var(--text3);
+  position: relative;
 }
 .athlete-photo-circle img {
   width: 100%;
@@ -346,13 +347,20 @@ body {
   box-shadow: 0 0 0 3px var(--accent-bg);
   transform: translateY(-2px);
 }
+.athlete-photo-num {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
 .athlete-photo-name {
   font-size: 11px;
   font-weight: 600;
   color: var(--text2);
   text-align: center;
   line-height: 1.3;
-  max-width: 80px;
+  max-width: 84px;
   word-break: break-word;
 }
 .athlete-photo-pos {
@@ -360,7 +368,7 @@ body {
   font-weight: 700;
   padding: 1px 5px;
   border-radius: 3px;
-  margin-top: -3px;
+  margin-top: -2px;
 }
 
 /* ---- ATHLETE MODAL (centralizado) ---- */
@@ -544,6 +552,66 @@ body {
 .empty-state h3 { font-size: 16px; font-weight: 700; color: var(--text2); margin-bottom: 6px; }
 .empty-state p { font-size: 13px; max-width: 300px; margin: 0 auto 16px; }
 
+
+/* ---- SCANNER DE ESCALAÇÃO OFICIAL ---- */
+.scan-upload-zone {
+  border: 2px dashed var(--accent);
+  border-radius: var(--r2);
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: var(--accent-bg);
+}
+.scan-upload-zone:hover { background: rgba(0,82,204,0.12); }
+.scan-upload-zone p { font-size: 13px; color: var(--accent); margin-top: 6px; font-weight: 500; }
+.scan-upload-zone input { display: none; }
+.scan-preview-img {
+  max-width: 100%;
+  max-height: 220px;
+  border-radius: var(--r2);
+  border: 1px solid var(--border);
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+.scan-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  font-size: 13px;
+  color: var(--text2);
+}
+.scan-status.loading { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+.scan-status.success { border-color: var(--green); color: var(--green); background: var(--green-bg); }
+.scan-status.error   { border-color: var(--red);   color: var(--red);   background: var(--red-bg); }
+.scan-spinner {
+  width: 16px; height: 16px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.official-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 3px;
+  background: var(--green-bg);
+  color: var(--green);
+  border: 1px solid rgba(0,135,90,0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
 /* ---- MODAL ---- */
 .modal-overlay {
   display: none; position: fixed; inset: 0;
@@ -646,6 +714,7 @@ select option { background: var(--bg2); color: var(--text); }
     <span class="site-logo-badge">Imprensa</span>
   </div>
   <div class="header-actions">
+
     <button class="btn btn-sm" onclick="openAthleteModal(null, null)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       Novo atleta
@@ -670,7 +739,7 @@ select option { background: var(--bg2); color: var(--text); }
       </div>
       <div class="nav-tab" data-tab="lineup" onclick="switchTab('lineup', this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        Últimas escalações
+        Provável escalação
       </div>
       <div class="nav-tab" data-tab="athletes" onclick="switchTab('athletes', this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -730,6 +799,78 @@ select option { background: var(--bg2); color: var(--text); }
     </div>
   </div>
   <div class="athlete-detail-body" id="panel-body"></div>
+</div>
+
+
+<!-- SCANNER DE ESCALAÇÃO OFICIAL -->
+<div class="modal-overlay" id="scanner-modal">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-title">📸 Escalação oficial por imagem</div>
+    <div class="form-section">
+      <div class="form-section-title">Time</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Time a identificar</label>
+          <select id="scan-side">
+            <option value="home">Time da casa</option>
+            <option value="away">Time visitante</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Fonte da imagem</label>
+          <select id="scan-source">
+            <option value="">Qualquer (Sofascore, FIFA, etc.)</option>
+            <option value="sofascore">Sofascore</option>
+            <option value="fifa">App oficial FIFA</option>
+            <option value="opta">Opta / WhoScored</option>
+            <option value="outro">Outro</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Imagem da escalação</div>
+      <div id="scan-drop-zone" class="scan-upload-zone" onclick="document.getElementById('scan-file-input').click()">
+        <div style="font-size:28px">📋</div>
+        <p>Clique para enviar o print da escalação<br><span style="font-size:11px;font-weight:400;opacity:0.7">JPG, PNG ou WebP — print do app, site ou TV</span></p>
+        <input type="file" id="scan-file-input" accept="image/*" onchange="handleScanFile(this)">
+      </div>
+      <div id="scan-preview-wrap" style="display:none;margin-top:10px">
+        <img id="scan-preview-img" class="scan-preview-img" src="" alt="Preview">
+        <div style="text-align:center;margin-top:6px">
+          <button class="btn btn-sm" onclick="clearScanFile()">✕ Remover imagem</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="scan-status-wrap" style="display:none;margin-bottom:1rem">
+      <div class="scan-status" id="scan-status-box">
+        <div class="scan-spinner" id="scan-spinner"></div>
+        <span id="scan-status-text">Analisando imagem...</span>
+      </div>
+    </div>
+
+    <div id="scan-result-wrap" style="display:none">
+      <div class="form-section">
+        <div class="form-section-title" style="display:flex;align-items:center;gap:8px">
+          Resultado da leitura
+          <span class="official-badge">✓ Escalação oficial</span>
+        </div>
+        <div class="lineup-grid" id="scan-result-grid" style="margin-top:0"></div>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn" onclick="closeScannerModal()">Cancelar</button>
+      <button class="btn btn-primary" id="scan-btn-analyze" onclick="runScanAnalysis()" disabled style="opacity:0.5">
+        🔍 Ler escalação
+      </button>
+      <button class="btn btn-primary" id="scan-btn-apply" onclick="applyScanResult()" style="display:none">
+        ✅ Aplicar ao jogo
+      </button>
+    </div>
+  </div>
 </div>
 
 <!-- GAME MODAL -->
@@ -1091,37 +1232,38 @@ const initialGames = [
   {
     home: 'Estados Unidos', away: 'Paraguai',
     homeFlag: '🇺🇸', awayFlag: '🇵🇾',
-    comp: 'Copa do Mundo 2026', group: 'Grupo D',
-    date: '2026-06-12', time: '22h (Brasília)',
-    stadium: 'SoFi Stadium', city: 'Los Angeles, EUA',
+    comp: 'Copa do Mundo FIFA 2026', group: 'Grupo D — 1ª Rodada',
+    date: '2026-06-12', time: 'Horário a confirmar',
+    stadium: 'SoFi Stadium — Inglewood', city: 'Los Angeles, Califórnia',
     teamTag: 'usa',
     lineupHome: [
-      {num:'1',name:'Matt Turner',pos:'GOL'},
-      {num:'4',name:'DeAndre Yedlin',pos:'LAD'},
-      {num:'5',name:'Tim Ream',pos:'ZAG'},
-      {num:'3',name:'Chris Richards',pos:'ZAG'},
-      {num:'12',name:'Antonee Robinson',pos:'LAE'},
-      {num:'6',name:'Yunus Musah',pos:'VOL'},
-      {num:'8',name:'Tyler Adams',pos:'VOL'},
-      {num:'7',name:'Gio Reyna',pos:'MED'},
-      {num:'11',name:'Timothy Weah',pos:'ALD'},
-      {num:'9',name:'Ricardo Pepi',pos:'ATA'},
-      {num:'10',name:'Christian Pulisic',pos:'MED'},
+      {num:'1', name:'Matt Turner', pos:'GOL'},
+      {num:'12',name:'Antonee Robinson', pos:'LAE'},
+      {num:'5', name:'Tim Ream', pos:'ZAG'},
+      {num:'3', name:'Chris Richards', pos:'ZAG'},
+      {num:'19',name:'Joe Scally', pos:'LAD'},
+      {num:'8', name:'Weston McKennie', pos:'VOL'},
+      {num:'25',name:'Tanner Tessmann', pos:'VOL'},
+      {num:'7', name:'Giovanni Reyna', pos:'MED'},
+      {num:'10',name:'Christian Pulisic', pos:'MED'},
+      {num:'11',name:'Timothy Weah', pos:'ALD'},
+      {num:'9', name:'Folarin Balogun', pos:'ATA'},
     ],
     lineupAway: [
-      {num:'1',name:'Antony Silva',pos:'GOL'},
-      {num:'2',name:'Gustavo Gómez',pos:'ZAG'},
-      {num:'3',name:'Fabián Balbuena',pos:'ZAG'},
-      {num:'4',name:'Júnior Alonso',pos:'ZAG'},
-      {num:'16',name:'Óscar Romero',pos:'MED'},
-      {num:'7',name:'Miguel Almirón',pos:'MED'},
-      {num:'10',name:'Mathías Villasanti',pos:'VOL'},
-      {num:'8',name:'Andrés Cubas',pos:'VOL'},
-      {num:'11',name:'Antonio Sanabria',pos:'ATA'},
-      {num:'9',name:'Julio Enciso',pos:'ATA'},
-      {num:'17',name:'Kaku',pos:'ALD'},
+      {num:'1', name:'Roberto Fernández', pos:'GOL'},
+      {num:'4', name:'Gustavo Gómez', pos:'ZAG'},
+      {num:'5', name:'Fabián Balbuena', pos:'ZAG'},
+      {num:'3', name:'Júnior Alonso', pos:'ZAG'},
+      {num:'6', name:'Alan Benítez', pos:'LAD'},
+      {num:'2', name:'Blás Riveros', pos:'LAE'},
+      {num:'16',name:'Braian Ojeda', pos:'VOL'},
+      {num:'18',name:'Damián Bobadilla', pos:'VOL'},
+      {num:'10',name:'Miguel Almirón', pos:'MED'},
+      {num:'11',name:'Julio Enciso', pos:'MED'},
+      {num:'9', name:'Antonio Sanabria', pos:'ATA'},
     ],
-    notes: 'EUA estreia na Copa do Mundo 2026 como anfitrião no grupo D, ao lado de Paraguai, Austrália e Turquia.\n\nOs EUA têm a pressão de jogar diante de sua torcida no SoFi Stadium, em Los Angeles. Christian Pulisic é o grande destaque e capitão da equipe.\n\nO Paraguai chega com Miguel Almirón como referência no meio-campo. A seleção guarani buscará a classificação pela segunda fase pela primeira vez desde 2010.\n\nTransmissão no Brasil: CazéTV, SporTV.',
+    notes: '',
+    historyHome: [], historyAway: [],
     files: []
   },
   {
@@ -1211,34 +1353,500 @@ const initialGames = [
 ];
 
 const initialAthletes = [
+
+  // ===================== EUA =====================
+
+  // -- Goleiros --
   {
-    name: 'Kylian Mbappé', num: '10', pos: 'ATA', country: 'França', club: 'Real Madrid', age: '27',
-    caps: '85', goals: '49', assists: '28', wcs: '3 (2018, 2022, 2026)',
-    bio: 'Kylian Mbappé nasceu em 20 de dezembro de 1998 em Bondy, França. Surgiu no Monaco com 16 anos e desde 2017 é destaque no Paris Saint-Germain, clube que deixou em 2024 para realizar o sonho de jogar no Real Madrid. É o atual capitão da seleção francesa e o maior artilheiro da história da França em Copas do Mundo.',
-    curiosities: 'Campeão mundial em 2018 com apenas 19 anos — segundo jogador mais jovem a marcar em uma final\nVice-campeão em 2022 — marcou hat-trick na final contra a Argentina, o maior feito individual em finais de Copa\nMaior artilheiro da história das Eliminatórias europeias para a Copa\nSe classificou em 2024 como o segundo jogador mais bem pago do mundo\nFala cinco idiomas: francês, espanhol, inglês, português e árabe',
-    photoUrl: null, gameLink: 1, side: 'home'
+    name:'Matt Turner', num:'1', pos:'GOL', country:'EUA', club:'Crystal Palace', age:'30',
+    caps:'35', goals:'0', assists:'0', wcs:'2 (2022, 2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Goleiro titular da seleção americana. Revelado no New England Revolution, transferiu-se para o Arsenal e depois para o Crystal Palace na Premier League. Presença segura sob os postes e liderança no vestiário.',
+    curiosities:'Titular na Copa 2022 — com excelente campanha dos EUA\nTransferido para a Premier League — Arsenal e Crystal Palace\nCom 30 anos, esta pode ser sua última Copa do Mundo',
+    photoUrl:null, gameLink:0, side:'home'
   },
   {
-    name: 'Marcus Thuram', num: '9', pos: 'ATA', country: 'França', club: 'Inter de Milão', age: '27',
-    caps: '40', goals: '18', assists: '10', wcs: '2 (2022, 2026)',
-    bio: 'Marcus Thuram, filho do lendário Lilian Thuram, destaca-se pela capacidade física e técnica no ataque. Após passagens por Guingamp e Borussia Mönchengladbach, tornou-se peça-chave na Inter de Milão e na seleção francesa.',
-    curiosities: 'Filho de Lilian Thuram, um dos maiores defensores da história da França\nNa Copa de 2022, marcou dois gols no empate contra a Sérvia\nArtilheiro da Serie A italiana na temporada 2024/25',
-    photoUrl: null, gameLink: 1, side: 'home'
+    name:'Patrick Schulte', num:'', pos:'GOL', country:'EUA', club:'Columbus Crew', age:'24',
+    caps:'5', goals:'0', assists:'0', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Goleiro reserva revelado pelo Columbus Crew na MLS. Uma das apostas de Pochettino para o futuro da posição.',
+    curiosities:'Revelado no Columbus Crew — referência da MLS\nUm dos goleiros mais jovens em uma Copa do Mundo pelos EUA',
+    photoUrl:null, gameLink:0, side:'home'
   },
   {
-    name: 'N\'Golo Kanté', num: '6', pos: 'MED', country: 'França', club: 'Al-Ittihad', age: '35',
-    caps: '60', goals: '2', assists: '5', wcs: '2 (2018, 2026)',
-    bio: 'Considerado um dos melhores médios volantes da história do futebol. Campeão mundial com a França em 2018. Após passagem pelo Chelsea, onde venceu a Champions League, transferiu-se para o futebol saudita em 2023. Retorna à Copa na sua possível despedida.',
-    curiosities: 'Campeão mundial em 2018 e campeão europeu em 2021 com o Chelsea\nNomeado para o top 3 da Bola de Ouro em 2017 e 2021\nFicou fora da Copa de 2022 por lesão — sua presença em 2026 é valiosa para o elenco',
-    photoUrl: null, gameLink: 1, side: 'home'
+    name:'Matt Freese', num:'', pos:'GOL', country:'EUA', club:'NY Red Bulls', age:'26',
+    caps:'3', goals:'0', assists:'0', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Terceiro goleiro do elenco. Atua pelo NY Red Bulls na MLS.',
+    curiosities:'Terceira opção para a meta americana no Mundial 2026',
+    photoUrl:null, gameLink:0, side:'home'
   },
   {
-    name: 'Christian Pulisic', num: '10', pos: 'MED', country: 'EUA', club: 'AC Milan', age: '26',
-    caps: '68', goals: '30', assists: '22', wcs: '2 (2022, 2026)',
-    bio: 'Capitão e principal jogador dos Estados Unidos. Nascido em Pennsylvania, Pulisic cresceu em Hershey e começou sua carreira no Borussia Dortmund, tornando-se o americano mais valioso da história. No AC Milan, tem sido titular absoluto.',
-    curiosities: 'Primeiro americano a marcar em eliminatórias de Copa desde 2017\nIdolo absoluto dos fãs americanos — chamado de "Captain America"\nJogou a Copa de 2022 e agora joga a primeiro Copa em casa, diante do próprio povo',
-    photoUrl: null, gameLink: 0, side: 'home'
+    name:'Chris Brady', num:'', pos:'GOL', country:'EUA', club:'Burnley', age:'21',
+    caps:'2', goals:'0', assists:'0', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Goleiro de apenas 21 anos que assinou com o Burnley na Championship inglesa. Grande promessa da posição para o futuro americano.',
+    curiosities:'Apenas 21 anos — presença na Copa é um bônus de desenvolvimento\nAtua no Burnley, na Championship inglesa',
+    photoUrl:null, gameLink:0, side:'home'
   },
+
+  // -- Defensores --
+  {
+    name:'Antonee Robinson', num:'12', pos:'LAT', country:'EUA', club:'Fulham', age:'27',
+    caps:'55', goals:'3', assists:'10', wcs:'2 (2022, 2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Lateral-esquerdo técnico e veloz. Consolidado no Fulham como um dos melhores da Premier League. Parceiro de Christian Pulisic no clube inglês — a amizade e entrosamento são diferenciais dentro de campo.',
+    curiosities:'Parceiro de Pulisic no Fulham — entrosamento garantido pela convivência diária\nUm dos melhores laterais-esquerdos da Premier League\nVelocidade e qualidade técnica — ameaça constante pelas laterais',
+    photoUrl:null, gameLink:0, side:'home'
+  },
+  {
+    name:'Chris Richards', num:'', pos:'ZAG', country:'EUA', club:'Crystal Palace', age:'25',
+    caps:'22', goals:'1', assists:'0', wcs:'2 (2022, 2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Zagueiro central revelado nas categorias de base do Bayern de Munique. Passou pelo Hoffenheim antes de chegar ao Crystal Palace na Premier League.',
+    curiosities:'Formado nas categorias de base do Bayern de Munique\nUm dos defensores mais jovens com experiência regular na Premier League',
+    photoUrl:null, gameLink:0, side:'home'
+  },
+  {
+    name:'Tim Ream', num:'5', pos:'ZAG', country:'EUA', club:'Charlotte FC', age:'36',
+    caps:'62', goals:'2', assists:'1', wcs:'3 (2014, 2022, 2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Veterano da seleção americana com três Copas do Mundo. Passou mais de uma década no Fulham antes de retornar à MLS no Charlotte FC. Liderança e experiência inestimáveis.',
+    curiosities:'3 Copas do Mundo — 2014, 2022 e 2026\nPassou mais de uma década no Fulham na Premier League\nO jogador mais experiente do elenco americano',
+    photoUrl:null, gameLink:0, side:'home'
+  },
+  {
+    name:'Auston Trusty', num:'', pos:'ZAG', country:'EUA', club:'Celtic', age:'26',
+    caps:'18', goals:'1', assists:'0', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Zagueiro que atua pelo Celtic na Escócia após passagem pelo Arsenal. Forte fisicamente e bom no jogo aéreo.',
+    curiosities:'Passou pelo Arsenal antes de chegar ao Celtic\nTitular regular na Champions League pelo Celtic',
+    photoUrl:null, gameLink:0, side:'home'
+  },
+  {
+    name:'Mark McKenzie', num:'', pos:'ZAG', country:'EUA', club:'Toulouse', age:'25',
+    caps:'20', goals:'1', assists:'0', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Zagueiro central que atua pelo Toulouse na Ligue 1 francesa. Boa leitura de jogo e saída de bola.',
+    curiosities:'Consolidado na Ligue 1 com o Toulouse\nUma das opções de Pochettino para a zaga reserva',
+    photoUrl:null, gameLink:0, side:'home'
+  },
+  {
+    name:'Joe Scally', num:'', pos:'LAT', country:'EUA', club:'Borussia M\'gladbach', age:'22',
+    caps:'15', goals:'0', assists:'1', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Lateral-direito de 22 anos formado no Borussia Mönchengladbach. Veloz e combativo, tem crescido muito no ciclo de Pochettino.',
+    curiosities:'Apenas 22 anos — futuro promissor na posição\nFormado na Bundesliga pelo Borussia Mönchengladbach',
+    photoUrl:null, gameLink:0, side:'home'
+  },
+  {
+    name:'Alex Freeman', num:'', pos:'LAT', country:'EUA', club:'PSV Eindhoven', age:'20',
+    caps:'4', goals:'0', assists:'0', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Defensor de apenas 20 anos revelado pelo PSV Eindhoven. Uma das apostas mais jovens de Pochettino para a Copa 2026.',
+    curiosities:'Apenas 20 anos — um dos mais jovens do elenco\nAtua ao lado de Ricardo Pepi no PSV Eindhoven',
+    photoUrl:null, gameLink:0, side:'home'
+  },
+
+  // -- Meias --
+  {
+    name:'Christian Pulisic', num:'10', pos:'MED', country:'EUA', club:'AC Milan', age:'27',
+    caps:'82', goals:'30', assists:'22', wcs:'2 (2022, 2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Capitão e principal jogador dos Estados Unidos. Nascido em Hershey, Pennsylvania, começou a carreira no Borussia Dortmund tornando-se o americano mais caro da história. Transferiu-se para o Chelsea em 2019 e para o AC Milan em 2023. Eleito 4x Jogador do Ano dos EUA — empatado com Landon Donovan.',
+    curiosities:'4x Jogador do Ano dos EUA — empatado com Landon Donovan\nEm seca de gols desde dezembro/2025 — sofreu lesão muscular glútea em mai/2026\nConsiderado o maior jogador da história do futebol americano\nParceiro de Antonee Robinson no Fulham — entrosamento dentro de campo',
+    photoUrl:null, gameLink:0, side:'home'
+  },
+  {
+    name:'Weston McKennie', num:'8', pos:'VOL', country:'EUA', club:'Leeds United', age:'26',
+    caps:'64', goals:'14', assists:'9', wcs:'2 (2022, 2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Meia box-to-box de enorme intensidade. Nascido no Texas, cresceu na Alemanha e se formou no Schalke. Passou pela Juventus e agora é peça central no Leeds. Motor do time no meio-campo, gols de cabeça e capacidade de desarme.',
+    curiosities:'Motor do meio-campo americano — cobertura, gols de cabeça, liderança\nFormado na Alemanha — cresceu em Kaiserslautern\nUm dos poucos americanos com experiência regular em Champions League',
+    photoUrl:null, gameLink:0, side:'home'
+  },
+  {
+    name:'Brenden Aaronson', num:'', pos:'MED', country:'EUA', club:'Union Berlin', age:'24',
+    caps:'38', goals:'7', assists:'6', wcs:'2 (2022, 2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Meia dinâmico com forte pressão e chegada ao ataque. Passou pelo RB Salzburg, Leeds e chegou ao Union Berlin. Peça do esquema de pressão alta de Pochettino.',
+    curiosities:'Revelado no RB Salzburg — escola de pressing de Rangnick\nPassou pelo Leeds United — experiência na Premier League\nEssencial no esquema de pressão alta de Pochettino',
+    photoUrl:null, gameLink:0, side:'home'
+  },
+  {
+    name:'Giovanni Reyna', num:'7', pos:'MED', country:'EUA', club:'Nottingham Forest', age:'22',
+    caps:'30', goals:'6', assists:'8', wcs:'2 (2022, 2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Filho de Claudio Reyna, ex-capitão do USMNT. Revelado no Borussia Dortmund, chegou ao Nottingham Forest em 2024. Criatividade e visão de jogo excepcionais no corredor entre linhas.',
+    curiosities:'Filho de Claudio Reyna, ex-capitão do USMNT — futebol no DNA\nRevelado no Borussia Dortmund aos 16 anos\nHistória de lesões o atrasou — Copa 2026 é sua grande chance',
+    photoUrl:null, gameLink:0, side:'home'
+  },
+  {
+    name:'Malik Tillman', num:'', pos:'MED', country:'EUA', club:'PSV Eindhoven', age:'22',
+    caps:'14', goals:'3', assists:'2', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Meia de origem alemã que optou por defender os EUA. Formado no Bayern de Munique, consolidou-se no PSV Eindhoven ao lado de Ricardo Pepi.',
+    curiosities:'Formado no Bayern de Munique — escolheu os EUA em vez da Alemanha\nAo lado de Ricardo Pepi no PSV Eindhoven\nUma das opções de Pochettino para o meio ofensivo',
+    photoUrl:null, gameLink:0, side:'home'
+  },
+  {
+    name:'Tanner Tessmann', num:'25', pos:'VOL', country:'EUA', club:'Chelsea', age:'23',
+    caps:'15', goals:'1', assists:'2', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Volante que assinou com o Chelsea em 2024. Jogador de combate com boa saída de bola. Substituto direto de Johnny Cardoso, que está fora por cirurgia.',
+    curiosities:'Assinou com o Chelsea em 2024 — experiência na Premier League\nSubstituto direto de Johnny Cardoso, que está FORA por cirurgia\nUma das revelações do ciclo Pochettino',
+    photoUrl:null, gameLink:0, side:'home'
+  },
+  {
+    name:'Aidan Morris', num:'', pos:'VOL', country:'EUA', club:'Middlesbrough', age:'23',
+    caps:'10', goals:'0', assists:'1', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Volante defensivo que atua no Middlesbrough no Championship inglês. Opção de equilíbrio para o meio-campo de Pochettino.',
+    curiosities:'Atua no Championship inglês pelo Middlesbrough\nOpção defensiva para o meio-campo americano',
+    photoUrl:null, gameLink:0, side:'home'
+  },
+  {
+    name:'Cristian Roldan', num:'', pos:'MED', country:'EUA', club:'Seattle Sounders', age:'29',
+    caps:'58', goals:'4', assists:'8', wcs:'2 (2022, 2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Veterano da seleção americana com duas Copas do Mundo. Ícone dos Seattle Sounders na MLS, traz experiência e versatilidade para o elenco de Pochettino.',
+    curiosities:'Veterano com duas Copas — 2022 e 2026\nÍcone dos Seattle Sounders na MLS\nVersátil — pode jogar em diferentes posições no meio',
+    photoUrl:null, gameLink:0, side:'home'
+  },
+  {
+    name:'Sebastian Berhalter', num:'', pos:'MED', country:'EUA', club:'Chicago Fire', age:'24',
+    caps:'8', goals:'1', assists:'1', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Filho do ex-técnico Gregg Berhalter. Meia que atua no Chicago Fire na MLS.',
+    curiosities:'Filho do ex-técnico Gregg Berhalter — que comandou os EUA na Copa 2022\nAtua no Chicago Fire na MLS',
+    photoUrl:null, gameLink:0, side:'home'
+  },
+
+  // -- Atacantes --
+  {
+    name:'Ricardo Pepi', num:'9', pos:'ATA', country:'EUA', club:'PSV Eindhoven', age:'21',
+    caps:'26', goals:'13', assists:'3', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Centroavante nascido em El Paso, Texas. Filho de mexicanos, escolheu defender os EUA. Forte fisicamente e artilheiro, foi vendido ao PSV Eindhoven onde se consolidou. Disputa titularidade com Balogun.',
+    curiosities:'Nascido em El Paso, Texas — filho de pais mexicanos, escolheu os EUA\nVendido ao PSV por US$6 milhões — recorde para americano saindo da MLS\nDisputa titularidade com Balogun — Pochettino terá escolha difícil',
+    photoUrl:null, gameLink:0, side:'home'
+  },
+  {
+    name:'Folarin Balogun', num:'', pos:'ATA', country:'EUA', club:'AS Monaco', age:'23',
+    caps:'18', goals:'10', assists:'4', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'11', clubAssists:'', clubSeason:'2025/26',
+    bio:'Atacante nascido em Londres com passaporte americano. Revelado pelo Arsenal, explodiu no Monaco na temporada 2025/26 marcando 11 gols nos últimos 12 jogos antes da Copa. Candidato forte à titularidade.',
+    curiosities:'11 gols nos últimos 12 jogos pelo Monaco antes da Copa — form explosivo\nEscolheu os EUA em vez da Inglaterra ou Nigéria\nCandidato forte a ser centroavante titular\n23 anos — uma das joias mais jovens do elenco',
+    photoUrl:null, gameLink:0, side:'home'
+  },
+  {
+    name:'Timothy Weah', num:'11', pos:'ALD', country:'EUA', club:'Juventus', age:'25',
+    caps:'42', goals:'5', assists:'8', wcs:'2 (2022, 2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Filho do ex-Bola de Ouro George Weah. Nascido nos EUA, optou pela seleção americana. Extremo rápido que atua pela direita, consolidado na Juventus. Marcou gol na Copa 2022.',
+    curiosities:'Filho de George Weah — único africano vencedor da Bola de Ouro\nMarcou gol na Copa 2022 x Irã — estreou com o pé direito\nConsolidado na Juventus — experiente em Champions League',
+    photoUrl:null, gameLink:0, side:'home'
+  },
+  {
+    name:'Patrick Agyemang', num:'', pos:'ATA', country:'EUA', club:'Brighton', age:'24',
+    caps:'6', goals:'2', assists:'0', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Atacante físico de 193cm que atua pelo Brighton na Premier League. Com possível lesão no joelho, sua participação na lista final é incerta.',
+    curiosities:'193cm — presença aérea diferenciada no ataque americano\nAtua pelo Brighton na Premier League\nIncerto na lista final por possível lesão no joelho',
+    photoUrl:null, gameLink:0, side:'home'
+  },
+  {
+    name:'Max Arfsten', num:'', pos:'ATA', country:'EUA', club:'Hoffenheim', age:'24',
+    caps:'5', goals:'1', assists:'1', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Atacante que atua pelo Hoffenheim na Bundesliga alemã. Preferência pelo pé esquerdo, pode atuar como ponta ou segundo atacante.',
+    curiosities:'Atua no Hoffenheim na Bundesliga\nPé esquerdo — opção de variação no ataque americano',
+    photoUrl:null, gameLink:0, side:'home'
+  },
+
+  // ===================== PARAGUAI =====================
+
+  // -- Goleiros --
+  {
+    name:'Roberto Fernández', num:'1', pos:'GOL', country:'Paraguai', club:'Cerro Porteño', age:'37',
+    caps:'45', goals:'0', assists:'0', wcs:'2 (2022, 2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Goleiro veterano e provável titular do Paraguai. Atua no Cerro Porteño no futebol paraguaio. Liderança e experiência para a equipe de Alfaro.',
+    curiosities:'Veterano de duas Copas do Mundo\nÍdolo do Cerro Porteño — o maior clube do Paraguai\nCom 37 anos, pode ser sua última Copa',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Carlos Coronel', num:'', pos:'GOL', country:'Paraguai', club:'NY Red Bulls', age:'28',
+    caps:'12', goals:'0', assists:'0', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Goleiro reserva que atua no NY Red Bulls na MLS. Nascido no Paraguai, cresceu nos EUA — curioso que defenda o Paraguai.',
+    curiosities:'Curiosidade: atua na MLS pelo NY Red Bulls — joga onde os EUA são o time da casa\nNascido no Paraguai, cresceu nos Estados Unidos',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Gastón Olveira', num:'', pos:'GOL', country:'Paraguai', club:'Olimpia', age:'32',
+    caps:'8', goals:'0', assists:'0', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Goleiro do Olimpia, um dos principais clubes paraguaios. Terceira opção para a posição na Copa.',
+    curiosities:'Ídolo do Olimpia — clube histórico do futebol paraguaio',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+
+  // -- Defensores --
+  {
+    name:'Gustavo Gómez', num:'4', pos:'ZAG', country:'Paraguai', club:'Palmeiras', age:'31',
+    caps:'68', goals:'5', assists:'2', wcs:'2 (2022, 2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Capitão do Paraguai. Zagueiro experiente e ídolo do Palmeiras. Ex-Milan, é a espinha dorsal da defesa paraguaia. Liderança dentro e fora de campo. Alfaro depende muito do seu capitão.',
+    curiosities:'Capitão do Paraguai — liderança dentro e fora de campo\nÍdolo do Palmeiras — um dos zagueiros mais respeitados da América do Sul\nEx-Milan — experiência europeia de alto nível\nEspinha dorsal: Alfaro depende muito dele',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Fabián Balbuena', num:'5', pos:'ZAG', country:'Paraguai', club:'Grêmio', age:'33',
+    caps:'60', goals:'3', assists:'1', wcs:'2 (2022, 2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Zagueiro veterano com passagem pelo West Ham e Corinthians. Parceiro de Gustavo Gómez na zaga paraguaia. Experiência e leitura de jogo para equilibrar a defesa.',
+    curiosities:'Ex-West Ham — experiência na Premier League\nVeterano de duas Copas — 2022 e 2026\nParceiro de Gustavo Gómez na zaga — dupla consolidada',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Júnior Alonso', num:'', pos:'ZAG', country:'Paraguai', club:'Atlético Mineiro', age:'32',
+    caps:'42', goals:'3', assists:'0', wcs:'2 (2022, 2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Zagueiro do Atlético Mineiro no futebol brasileiro. Faz dupla consistente com Gustavo Gómez e Balbuena na defesa paraguaia.',
+    curiosities:'Titular no Atlético Mineiro — campeão brasileiro\nExperiência no futebol brasileiro — conhece o nível sul-americano',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Omar Alderete', num:'', pos:'ZAG', country:'Paraguai', club:'Sunderland', age:'27',
+    caps:'28', goals:'2', assists:'0', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Zagueiro que atua no Sunderland no Championship inglês. Opção de profundidade para a zaga paraguaia.',
+    curiosities:'Atua no Championship inglês pelo Sunderland\nOpção de rotação para a defesa de Alfaro',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Blás Riveros', num:'', pos:'LAT', country:'Paraguai', club:'Cerro Porteño', age:'27',
+    caps:'30', goals:'2', assists:'4', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Lateral-esquerdo ágil do Cerro Porteño. Opção de Alfaro para cobrir o lado esquerdo da defesa.',
+    curiosities:'Lateral versátil — pode cobrir ambos os lados\nÍdolo do Cerro Porteño',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Saúl Salcedo', num:'', pos:'ZAG', country:'Paraguai', club:'Newell\'s Old Boys', age:'27',
+    caps:'20', goals:'1', assists:'0', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Zagueiro que atua no Newell\'s Old Boys na Argentina. Opção para Alfaro na defesa paraguaia.',
+    curiosities:'Atua no futebol argentino — conhece o estilo físico sul-americano',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Alan Benítez', num:'', pos:'LAT', country:'Paraguai', club:'Libertad', age:'30',
+    caps:'35', goals:'1', assists:'5', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Lateral-direito experiente que atua no Libertad no futebol paraguaio. Marcação firme na contenção ao Pulisic é sua missão principal no jogo contra os EUA.',
+    curiosities:'Missão difícil: marcar Christian Pulisic durante o jogo\nExperiência no futebol paraguaio — conhece o sistema de Alfaro',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Diego León', num:'', pos:'ZAG', country:'Paraguai', club:'Manchester United', age:'19',
+    caps:'5', goals:'0', assists:'0', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Defensor de 19 anos e maior surpresa da prelista de Alfaro. Nascido em 2007, é a joia mais nova do ciclo paraguaio. Assinou com o Manchester United e desponta como grande promessa.',
+    curiosities:'Apenas 19 anos (nascido em 2007) — joia mais jovem do elenco paraguaio\nAssinou com o Manchester United — grandíssima expectativa\nMaior surpresa da prelista de Alfaro\nSe confirmado, será um dos mais jovens do Mundial 2026',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Agustín Sández', num:'', pos:'LAT', country:'Paraguai', club:'Rosario Central', age:'24',
+    caps:'12', goals:'0', assists:'2', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Lateral-esquerdo que atua no Rosario Central na Argentina. Opção jovem para a posição no elenco paraguaio.',
+    curiosities:'Atua no futebol argentino — experiência em torneios sul-americanos',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Juan José Cáceres', num:'', pos:'ZAG', country:'Paraguai', club:'Dinamo Moscou', age:'24',
+    caps:'8', goals:'0', assists:'0', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Defensor que atua no Dinamo Moscou na Rússia. Opção de profundidade para Alfaro.',
+    curiosities:'Um dos poucos sul-americanos atuando no futebol russo',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Alan Núñez', num:'', pos:'ZAG', country:'Paraguai', club:'Nacional PAR', age:'21',
+    caps:'4', goals:'0', assists:'0', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Defensor jovem do Nacional, clube do Paraguai. Opção de futuro para o elenco de Alfaro.',
+    curiosities:'Apenas 21 anos — futuro da defesa paraguaia',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Alexandro Maidana', num:'', pos:'LAT', country:'Paraguai', club:'Talleres', age:'20',
+    caps:'3', goals:'0', assists:'0', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Jovem defensor versátil de apenas 20 anos que atua no Talleres na Argentina. Pode jogar tanto como defensor quanto atacante pelo lado.',
+    curiosities:'20 anos — um dos mais jovens do elenco paraguaio\nVersátil: pode atuar como defensor ou atacante pelas laterais',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+
+  // -- Meias --
+  {
+    name:'Miguel Almirón', num:'10', pos:'MED', country:'Paraguai', club:'Atlanta United', age:'30',
+    caps:'72', goals:'12', assists:'18', wcs:'2 (2022, 2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Ídolo nacional paraguaio. Brilhou no Newcastle por 5 anos antes de retornar à MLS no Atlanta United. Velocidade explosiva nas transições. Seu desempenho define o ritmo ofensivo paraguaio.',
+    curiosities:'Ídolo nacional — o maior jogador paraguaio da geração atual\nEx-Newcastle United — marcante na Premier League\nVelocidade explosiva: a arma mais perigosa nas transições\nRetornou à MLS — motivação extra para brilhar no Mundial',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Julio Enciso', num:'11', pos:'MED', country:'Paraguai', club:'RC Estrasburgo', age:'22',
+    caps:'28', goals:'7', assists:'5', wcs:'2 (2022, 2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Joia de 22 anos do futebol paraguaio. Driblador, gols em curva, marcou na Copa 2022 com apenas 19 anos. Passou pelo Brighton antes do Estrasburgo. Quebrou sequência sem gols em maio/2026 chegando embalado.',
+    curiosities:'Marcou na Copa 2022 com apenas 19 anos — joia precoce\nDriblador habilidoso — gols em curva são sua especialidade\nJogou no Brighton — experiência na Premier League\nQuebrou sequência sem gols em mai/2026 — chega embalado',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Diego Gómez', num:'16', pos:'MED', country:'Paraguai', club:'Inter Miami', age:'22',
+    caps:'22', goals:'3', assists:'5', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Companheiro de Messi e Suárez no Inter Miami. Meia técnico que organiza o jogo pelo centro. Uma das revelações paraguaias do ciclo de Alfaro.',
+    curiosities:'Companheiro de Messi e Suárez no Inter Miami\nTécnico e organizado — cérebro do meio-campo paraguaio\nUma das revelações do ciclo Alfaro para o Mundial 2026',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Braian Ojeda', num:'', pos:'VOL', country:'Paraguai', club:'Nottingham Forest', age:'24',
+    caps:'18', goals:'1', assists:'3', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Volante do Nottingham Forest na Premier League. Equilíbrio e marcação são suas principais qualidades no meio-campo paraguaio.',
+    curiosities:'Atua na Premier League pelo Nottingham Forest\nCuriosidade: mesmo clube de Giovanni Reyna (EUA)',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Matías Galarza', num:'', pos:'MED', country:'Paraguai', club:'Genoa', age:'23',
+    caps:'15', goals:'2', assists:'3', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Meia que atua no Genoa na Serie A italiana. Qualidade técnica e visão de jogo para o meio-campo de Alfaro.',
+    curiosities:'Atua na Serie A italiana pelo Genoa\nTécnica e visão de jogo — diferencial no meio paraguaio',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Alejandro Romero', num:'', pos:'MED', country:'Paraguai', club:'Al Ain', age:'30',
+    caps:'40', goals:'5', assists:'8', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Meia veterano que atua no Al Ain nos Emirados Árabes Unidos. Experiência e criatividade para o elenco de Alfaro.',
+    curiosities:'Atua nos Emirados Árabes Unidos — liga de alto investimento\nVeterano com experiência em diversas ligas',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Damián Bobadilla', num:'', pos:'VOL', country:'Paraguai', club:'Athletic Club', age:'24',
+    caps:'14', goals:'1', assists:'2', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Volante que atua no Athletic Club de Bilbao na Liga Espanhola. Combate e marcação — opção de profundidade para Alfaro.',
+    curiosities:'Atua no Athletic Club de Bilbao na La Liga\nUm dos poucos paraguaios no futebol espanhol de elite',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Maurício', num:'', pos:'MED', country:'Paraguai', club:'Corinthians', age:'24',
+    caps:'10', goals:'1', assists:'2', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Meia que atua no Corinthians no futebol brasileiro. Conhece bem o estilo sul-americano e pode contribuir como opção ofensiva.',
+    curiosities:'Atua no Corinthians — um dos maiores clubes do Brasil\nConhecimento do futebol brasileiro é diferencial',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+
+  {
+    name:'Santiago Rojas', num:'', pos:'GOL', country:'Paraguai', club:'Nacional PAR', age:'29',
+    caps:'6', goals:'0', assists:'0', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Goleiro do Nacional, clube histórico do Paraguai. Opção de reserva para o gol paraguaio.',
+    curiosities:'Atua pelo Nacional, um dos maiores clubes do Paraguai',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Orlando Gill', num:'', pos:'GOL', country:'Paraguai', club:'San Lorenzo', age:'25',
+    caps:'2', goals:'0', assists:'0', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Goleiro jovem que atua no San Lorenzo na Argentina. Reserva de terceiro nível no elenco paraguaio.',
+    curiosities:'Atua no San Lorenzo — clube histórico do futebol argentino',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Juan Ángel Espínola', num:'', pos:'GOL', country:'Paraguai', club:'Barracas Central', age:'30',
+    caps:'4', goals:'0', assists:'0', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Goleiro que atua no Barracas Central na Argentina. Opção adicional para a posição no elenco de Alfaro.',
+    curiosities:'Atua no futebol argentino pelo Barracas Central',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Gustavo Velázquez', num:'', pos:'ZAG', country:'Paraguai', club:'Cerro Porteño', age:'33',
+    caps:'22', goals:'1', assists:'0', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Defensor veterano do Cerro Porteño. Experiência no futebol paraguaio e conhecimento do sistema de Alfaro.',
+    curiosities:'Veterano do Cerro Porteño — um dos mais experientes da defesa\nConhecimento profundo do sistema de Alfaro',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Alcides Benítez', num:'', pos:'ZAG', country:'Paraguai', club:'Belgrano', age:'23',
+    caps:'5', goals:'0', assists:'0', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Defensor jovem que atua no Belgrano na Argentina. Uma das apostas de Alfaro para o futuro da defesa paraguaia.',
+    curiosities:'Apenas 23 anos — futuro da zaga paraguaia\nAtua no Belgrano, no futebol argentino',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'José Canale', num:'', pos:'ZAG', country:'Paraguai', club:'Lanús', age:'28',
+    caps:'8', goals:'0', assists:'0', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Defensor que atua no Lanús na Argentina. Opção de profundidade para Alfaro na zaga paraguaia.',
+    curiosities:'Atua no Lanús — futebol argentino de primeira divisão',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+
+  // -- Atacantes --
+  {
+    name:'Ramón Sosa', num:'7', pos:'ALD', country:'Paraguai', club:'Palmeiras', age:'25',
+    caps:'30', goals:'6', assists:'9', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Extremo rápido do Palmeiras. Fundamental nas transições ofensivas do Paraguai. Ao lado de Gustavo Gómez, é um dos dois titulares do Verdão no elenco paraguaio.',
+    curiosities:'Atua no Palmeiras — junto com Gustavo Gómez, dois titulares do Verdão no Mundial\nVelocidade e drible — ameaça constante nas transições\nCrescimento notável no ciclo de Alfaro',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Antonio Sanabria', num:'9', pos:'ATA', country:'Paraguai', club:'Cremonese', age:'28',
+    caps:'50', goals:'14', assists:'6', wcs:'2 (2022, 2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Centroavante experiente com passagem por Roma, Betis e Torino. Artilheiro histórico do Paraguai, referência na frente do ataque de Alfaro.',
+    curiosities:'Artilheiro histórico do Paraguai na geração atual\nExperiência em Serie A, La Liga e Premier League\nVeterano de duas Copas — 2022 e 2026',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Gabriel Ávalos', num:'', pos:'ATA', country:'Paraguai', club:'Independiente', age:'34',
+    caps:'38', goals:'10', assists:'4', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Atacante veterano de 34 anos que atua no Independiente na Argentina. Experiência e presença física como opção ofensiva de Alfaro.',
+    curiosities:'Com 34 anos — um dos mais velhos do elenco paraguaio\nVeterano do futebol argentino — Independiente',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Álex Arce', num:'', pos:'ATA', country:'Paraguai', club:'Independiente Rivadavia', age:'30',
+    caps:'25', goals:'7', assists:'3', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025',
+    bio:'Atacante que atua no Independiente Rivadavia na Argentina. Opção de profundidade no ataque paraguaio.',
+    curiosities:'Atua no futebol argentino\nOpção ofensiva de profundidade para Alfaro',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+  {
+    name:'Gustavo Caballero', num:'', pos:'ATA', country:'Paraguai', club:'Portsmouth', age:'23',
+    caps:'8', goals:'2', assists:'1', wcs:'1 (2026)',
+    clubGames:'', clubGoals:'', clubAssists:'', clubSeason:'2025/26',
+    bio:'Atacante jovem que atua no Portsmouth no Championship inglês. Uma das apostas de Alfaro para o futuro do ataque paraguaio.',
+    curiosities:'Atua no Championship inglês pelo Portsmouth\nUma das apostas jovens de Alfaro no ataque',
+    photoUrl:null, gameLink:0, side:'away'
+  },
+
 ];
 
 // ---- LOAD DATA ----
@@ -1405,17 +2013,22 @@ function renderLineup(g) {
 
   // ---- ESCALAÇÃO PROVÁVEL ----
   let html = `<div class="card">
-    <div class="card-title">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      Escalação provável
+    <div class="card-title" style="justify-content:space-between">
+      <span style="display:flex;align-items:center;gap:7px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Escalação provável
+      </span>
+      <button class="btn btn-sm btn-primary" onclick="openScannerModal()" style="font-size:12px">
+        📸 Ler escalação oficial
+      </button>
     </div>
     <div class="lineup-grid">
       <div>
-        <div class="lineup-team-header">${g.homeFlag||''} ${escHtml(g.home)}</div>
+        <div class="lineup-team-header">${g.homeFlag||''} ${escHtml(g.home)} ${g.lineupHomeOfficial ? '<span class="official-badge">✓ Oficial</span>' : ''}</div>
         ${renderSide(g.lineupHome, g.home, g.homeFlag)}
       </div>
       <div>
-        <div class="lineup-team-header">${g.awayFlag||''} ${escHtml(g.away)}</div>
+        <div class="lineup-team-header">${g.awayFlag||''} ${escHtml(g.away)} ${g.lineupAwayOfficial ? '<span class="official-badge">✓ Oficial</span>' : ''}</div>
         ${renderSide(g.lineupAway, g.away, g.awayFlag)}
       </div>
     </div>
@@ -1510,13 +2123,14 @@ function renderAthletes(g) {
     list.forEach(a => {
       const realIdx = athletes.indexOf(a);
       const initials = a.name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
-      // Pegar primeiro nome para label curto
-      const shortName = a.name.split(' ')[0];
+      // Nome da camisa = último sobrenome (como aparece nas costas da camisa)
+      const jerseyName = a.name.split(' ').pop().toUpperCase();
       s += `<div class="athlete-photo-item" onclick="openAthleteProfileModal(${realIdx})">
         <div class="athlete-photo-circle">
           ${a.photoUrl ? `<img src="${a.photoUrl}" alt="${escHtml(a.name)}">` : initials}
         </div>
-        <div class="athlete-photo-name">${escHtml(shortName)}</div>
+        ${a.num ? `<div class="athlete-photo-num">#${a.num}</div>` : ''}
+        <div class="athlete-photo-name">${escHtml(jerseyName)}</div>
         ${a.pos ? `<span class="athlete-photo-pos ${posClass(a.pos)} athlete-tag">${a.pos}</span>` : ''}
       </div>`;
     });
@@ -1534,37 +2148,179 @@ function renderAthletes(g) {
 }
 
 // ---- PRESSKIT TAB ----
+
+// Informações estáticas de presskit por jogo (indexadas pelo índice do jogo)
+const presskitInfo = {
+  0: { // EUA x Paraguai
+    alerts: [
+      { type:'danger', label:'DESFALQUE EUA', text:'Johnny Cardoso (Real Betis / Atlético de Madrid) está FORA do Mundial por cirurgia. O meia central era peça importante do meio-campo de Pochettino. Fonte: CBS Sports (mai/2026).' },
+      { type:'warning', label:'DÚVIDA EUA', text:'Christian Pulisic sofreu lesão muscular na região glútea em maio/2026 e está em seca de gols desde dezembro/2025. Incerto para o início da preparação. Fonte: Yahoo Sports / CBS Sports (mai/2026).' },
+      { type:'warning', label:'DÚVIDA PARAGUAI', text:'Adam Bareiro (Boca Juniors) sofreu desgarro muscular. Presença na lista final de 26 depende de recuperação. Lista definitiva sai em 1º de junho. Fonte: teleSUR / La Nación PY (mai/2026).' },
+    ],
+    sections: [
+      {
+        title: '📋 Contexto do jogo',
+        content: `EUA estreia no Grupo D jogando em casa no SoFi Stadium, em Los Angeles. O Paraguai retorna ao Mundial após 16 anos de ausência — a última participação foi em 2010, quando chegou às quartas de final. Para ambas as seleções, é um jogo de enorme pressão e significado histórico.
+
+Demais jogos do grupo: 19/jun — EUA x Austrália (Lumen Field) | 19/jun — Turquia x Paraguai (Levi's Stadium) | 25/jun — Rodada final simultânea.`
+      },
+      {
+        title: '🇺🇸 Estados Unidos — Guia de jogo (Sports Illustrated)',
+        content: `Técnico: Mauricio Pochettino (ARG) — desde set/2024. Primeira Copa do Mundo como técnico de seleção.
+
+Formação preferida: 3-4-2-1. Estilo: pressão constante, saída de bola organizada, laterais ofensivos como diferencial.
+
+Fortalezas: profundidade no elenco, extremos de elite, pressing sem bola.
+Fraquezas: dificuldade em manter a valla invicta, ataque inconsistente.
+
+A seleção americana renasceu com o 3-4-2-1 de Pochettino, mostrando solidez tática e pressão constante. Dois laterais ofensivos geram perigo adicional. Pulisic é o fator decisivo — sua capacidade desequilibrante e leitura ofensiva convertem os EUA em ameaça real. Balogun (11 gols nos últimos 12 jogos pelo Monaco) é candidato à titularidade no ataque.
+
+Meta declarada de Pochettino: semifinal — objetivo histórico para o futebol americano.
+
+Fonte: Sports Illustrated / si.com (mai/2026)`
+      },
+      {
+        title: '🇵🇾 Paraguai — Guia de jogo (Sports Illustrated)',
+        content: `Técnico: Gustavo Alfaro (ARG) — desde ago/2024. Dirigiu o Equador na Copa 2022, vencendo o Qatar (sede) na estreia.
+
+Formação preferida: 4-2-3-1 / 4-4-2. Estilo: contra-ataque, mentalidade defensiva.
+
+Fortalezas: defesa organizada e difícil de penetrar, meias criativos.
+Fraquezas: pouca produção ofensiva, profundidade limitada no elenco.
+
+Record nas eliminatórias: 7V-4E-7D — 6º lugar na CONMEBOL com 25 pontos. Classificou-se diretamente, sem repechagem. Destaque: vitórias sobre Argentina (2x1), Brasil (1x0) e Uruguai (2x0).
+
+Alfaro construiu um bloco compacto e extremamente difícil de vencer. Almirón e Enciso são os principais desequilibrantes. Gustavo Gómez (Palmeiras) é a liderança e espinha dorsal.
+
+O Paraguai busca repetir o feito do Equador em 2022: vencer a seleção-sede logo na estreia.
+
+Fonte: Sports Illustrated / si.com (mai/2026)`
+      },
+      {
+        title: '⚽ Duelos-chave a acompanhar',
+        content: `• Pulisic (EUA) × Alan Benítez / Blás Riveros (PAR) — capitão americano precisará de marcação especial. Laterais paraguaios sob pressão máxima.
+• McKennie nas bolas aéreas × Gómez / Alonso (PAR) — McKennie é ameaça no ar. Zaga paraguaia precisa controlar o jogo aéreo.
+• Balogun (EUA) × Balbuena / Alderete (PAR) — disputa física na área. Balogun em grande momento de gols.
+• Almirón (PAR) em contra-ataque × Scally / Trusty (EUA) — Almirón é rápido demais em espaços. Defesa americana precisa vigiar as transições.`
+      },
+      {
+        title: '🎙 Sugestões de entrevista',
+        content: `• Pochettino: "Declarou meta de semifinal. Como prepara o grupo para essa pressão histórica jogando em casa?"
+• Pulisic: "Você disse que esta é a geração mais forte da história do futebol americano. O que precisa acontecer para confirmar isso hoje?"
+• Alfaro: "O senhor venceu o Qatar em 2022 com o Equador. Como prepara o Paraguai para tarefa parecida contra os EUA em casa?"
+• Gustavo Gómez: "Como capitão e ídolo do Palmeiras, o que esse Mundial significa para o povo paraguaio após 16 anos?"
+• Julio Enciso: "Você é a joia mais esperada. Como lida com a responsabilidade de carregar esse peso com apenas 22 anos?"`
+      },
+      {
+        title: '📺 Transmissão e checklist pré-jogo',
+        content: `Transmissão no Brasil: CazéTV, SporTV.
+
+✅ Confirmar escalação oficial 60 min antes do jogo (Opta / FIFA)
+✅ Verificar se Pulisic está confirmado — @ussoccer
+✅ Confirmar lista final de 26 do Paraguai (1º/junho — @AlbirrojaAPF)
+✅ Amistosos EUA: × Senegal (31/mai, Charlotte) e × Alemanha (06/jun, Chicago)
+✅ Amistoso PAR: × Nicaragua (05/jun, Assunção)`
+      },
+      {
+        title: '📊 Grupo D — Tabela',
+        content: `País            J  V  E  D  PTS
+Estados Unidos  0  0  0  0   0
+Paraguai        0  0  0  0   0
+Austrália       0  0  0  0   0
+Turquia         0  0  0  0   0
+
+Classificam-se os 2 primeiros + 8 melhores terceiros colocados.
+O Copa 2026 tem 48 seleções e 12 grupos.`
+      },
+    ],
+    sources: [
+      { label:'Pauta de Jogo — Documento interno', url:'' },
+      { label:'Sports Illustrated — Guia EUA', url:'https://www.si.com/es-us/futbol/estados-unidos-mundial-2026-previa' },
+      { label:'Sports Illustrated — Guia Paraguai', url:'https://www.si.com/es-us/futbol/paraguay-mundial-2026-previa' },
+      { label:'CBS Sports — Pulisic seca de gols', url:'https://www.cbssports.com/soccer/news/usmnt-star-christian-pulisic-goal-drought-2026-world-cup-usa-soccer/' },
+      { label:'CBS Sports — Cardoso fora por cirurgia', url:'https://www.cbssports.com/soccer/news/world-cup-2026-usmnt-christian-pulisic-johnny-cardoso-nico-williams-usa-spain/' },
+      { label:'Infobae — Prelista Paraguai', url:'https://www.infobae.com/deportes/2026/05/13/con-14-jugadores-del-futbol-argentino-los-55-elegidos-de-gustavo-alfaro-para-la-prelista-de-paraguay-de-cara-al-mundial/' },
+    ]
+  }
+};
+
 function renderPresskit(g) {
-  if (!g.files || !g.files.length) {
-    return `<div class="empty-state">
+  const info = presskitInfo[activeGameIdx];
+  const alertColors = { danger:'var(--red-bg)', warning:'var(--amber-bg)' };
+  const alertBorder = { danger:'var(--red)', warning:'var(--amber)' };
+  const alertText = { danger:'var(--red)', warning:'var(--amber)' };
+
+  let html = '';
+
+  // ---- ALERTAS ----
+  if (info && info.alerts && info.alerts.length) {
+    html += `<div style="margin-bottom:1rem">`;
+    info.alerts.forEach(a => {
+      html += `<div style="background:${alertColors[a.type]||'var(--bg3)'};border-left:4px solid ${alertBorder[a.type]||'var(--border2)'};border-radius:var(--r2);padding:10px 14px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start">
+        <span style="font-size:11px;font-weight:700;color:${alertText[a.type]||'var(--text2)'};white-space:nowrap;padding-top:1px">${escHtml(a.label)}</span>
+        <span style="font-size:13px;color:var(--text2);line-height:1.5">${escHtml(a.text)}</span>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // ---- SEÇÕES DE CONTEÚDO ----
+  if (info && info.sections && info.sections.length) {
+    info.sections.forEach(s => {
+      html += `<div class="card" style="margin-bottom:1rem">
+        <div class="card-title" style="margin-bottom:.75rem">${escHtml(s.title)}</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.75;white-space:pre-wrap">${escHtml(s.content)}</div>
+      </div>`;
+    });
+  }
+
+  // ---- ARQUIVOS ENVIADOS ----
+  if (g.files && g.files.length) {
+    html += `<div class="card" style="margin-bottom:1rem">
+      <div class="card-title" style="margin-bottom:1rem">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+        Documentos anexados
+      </div>
+      <div class="presskit-grid">`;
+    g.files.forEach(f => {
+      const icon = f.type === 'application/pdf' ? '📄' : f.type && f.type.startsWith('image') ? '🖼' : '📎';
+      const size = f.size ? (f.size > 1024*1024 ? (f.size/1024/1024).toFixed(1)+' MB' : Math.round(f.size/1024)+' KB') : '';
+      html += `<div class="presskit-card">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="presskit-icon">${icon}</div>
+          <div><div class="presskit-name">${escHtml(f.name)}</div>${size?`<div class="presskit-meta">${size}</div>`:''}</div>
+        </div>
+        <div class="presskit-actions">
+          ${f.url?`<a href="${f.url}" target="_blank" class="btn btn-sm">👁 Ver</a><a href="${f.url}" download="${escHtml(f.name)}" class="btn btn-sm">⬇ Baixar</a>`:''}
+        </div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  }
+
+  // ---- FONTES ----
+  if (info && info.sources && info.sources.length) {
+    html += `<div class="card">
+      <div class="card-title" style="margin-bottom:.75rem">🔗 Fontes e referências</div>`;
+    info.sources.forEach(s => {
+      html += `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)">
+        <span style="font-size:13px;color:var(--text2);flex:1">${escHtml(s.label)}</span>
+        ${s.url ? `<a href="${s.url}" target="_blank" class="btn btn-sm">↗ Abrir</a>` : ''}
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // Se não há nada ainda (jogo sem presskit estático)
+  if (!info && (!g.files || !g.files.length)) {
+    html = `<div class="empty-state">
       <div class="icon">📎</div>
-      <h3>Nenhum documento no presskit</h3>
-      <p>Adicione PDFs, imagens e documentos para facilitar a cobertura.</p>
-      <button class="btn btn-primary" onclick="openGameModal(${activeGameIdx})">✏️ Editar jogo e adicionar arquivos</button>
+      <h3>Nenhuma informação no presskit</h3>
+      <p>Adicione documentos ou edite o jogo para incluir informações de cobertura.</p>
+      <button class="btn btn-primary" onclick="openGameModal(${activeGameIdx})">✏️ Editar jogo</button>
     </div>`;
   }
-  let html = `<div class="card"><div class="card-title">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-    Presskit e documentos
-  </div><div class="presskit-grid">`;
-  g.files.forEach((f, fi) => {
-    const icon = f.type === 'application/pdf' ? '📄' : f.type && f.type.startsWith('image') ? '🖼' : '📎';
-    const size = f.size ? (f.size > 1024*1024 ? (f.size/1024/1024).toFixed(1)+' MB' : Math.round(f.size/1024)+' KB') : '';
-    html += `<div class="presskit-card">
-      <div style="display:flex;gap:12px;align-items:center">
-        <div class="presskit-icon">${icon}</div>
-        <div>
-          <div class="presskit-name">${escHtml(f.name)}</div>
-          ${size ? `<div class="presskit-meta">${size}</div>` : ''}
-        </div>
-      </div>
-      <div class="presskit-actions">
-        ${f.url ? `<a href="${f.url}" target="_blank" class="btn btn-sm">👁 Visualizar</a>
-        <a href="${f.url}" download="${escHtml(f.name)}" class="btn btn-sm">⬇ Baixar</a>` : ''}
-      </div>
-    </div>`;
-  });
-  html += '</div></div>';
+
   return html;
 }
 
@@ -1613,11 +2369,16 @@ function openAthleteProfileModal(idx) {
   const hasClubStats = a.clubGames || a.clubGoals || a.clubAssists;
   if (hasClubStats) {
     const seasonLabel = a.clubSeason ? ` <span style="font-weight:400;font-size:10px;color:var(--text3)">${escHtml(a.clubSeason)}</span>` : '';
-    body += `<div class="detail-section"><div class="detail-section-title">Pelo clube${seasonLabel}</div><div class="stat-grid">`;
-    if (a.clubGames) body += `<div class="stat-item"><div class="stat-label">Jogos</div><div class="stat-value">${escHtml(a.clubGames)}</div></div>`;
-    if (a.clubGoals) body += `<div class="stat-item"><div class="stat-label">Gols</div><div class="stat-value">${escHtml(a.clubGoals)}</div></div>`;
+    const clubLabel = a.club ? ` · ${escHtml(a.club)}` : '';
+    body += `<div class="detail-section"><div class="detail-section-title">Pelo clube${clubLabel}${seasonLabel}</div><div class="stat-grid">`;
+    if (a.clubGames)   body += `<div class="stat-item"><div class="stat-label">Jogos</div><div class="stat-value">${escHtml(a.clubGames)}</div></div>`;
+    if (a.clubGoals)   body += `<div class="stat-item"><div class="stat-label">Gols</div><div class="stat-value">${escHtml(a.clubGoals)}</div></div>`;
     if (a.clubAssists) body += `<div class="stat-item"><div class="stat-label">Assist.</div><div class="stat-value">${escHtml(a.clubAssists)}</div></div>`;
-    body += `</div></div>`;
+    body += `</div><div style="font-size:11px;color:var(--text3);margin-top:8px">⚠ Dados a preencher quando disponíveis via PDF</div></div>`;
+  } else {
+    body += `<div class="detail-section"><div class="detail-section-title">Pelo clube · ${escHtml(a.club||'—')} ${a.clubSeason?'· '+escHtml(a.clubSeason):''}</div>
+      <div style="font-size:12px;color:var(--text3);padding:8px 0">Estatísticas da temporada ainda não cadastradas. Edite o atleta para preencher.</div>
+    </div>`;
   }
   if (a.bio) {
     body += `<div class="detail-section"><div class="detail-section-title">Histórico</div><div class="detail-text">${escHtml(a.bio)}</div></div>`;
@@ -1869,6 +2630,214 @@ function deleteAthlete(i) {
   closeAthletePanel();
   if (activeTab === 'athletes') renderMain();
 }
+
+// ============================================================
+// SCANNER DE ESCALAÇÃO OFICIAL (Claude Vision API)
+// ============================================================
+
+let scanFileData = null;      // base64 da imagem
+let scanFileType = null;      // mime type
+let scanParsedResult = null;  // { home: [...] } ou { away: [...] }
+let scanTargetSide = 'home';
+
+function openScannerModal() {
+  clearScanFile();
+  scanParsedResult = null;
+  document.getElementById('scan-result-wrap').style.display = 'none';
+  document.getElementById('scan-status-wrap').style.display = 'none';
+  document.getElementById('scan-btn-apply').style.display = 'none';
+  document.getElementById('scan-btn-analyze').style.display = '';
+  document.getElementById('scan-btn-analyze').disabled = true;
+  document.getElementById('scan-btn-analyze').style.opacity = '0.5';
+  document.getElementById('scan-side').value = 'home';
+  document.getElementById('scan-source').value = '';
+  document.getElementById('scanner-modal').classList.add('open');
+}
+function closeScannerModal() {
+  document.getElementById('scanner-modal').classList.remove('open');
+}
+
+function handleScanFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const dataUrl = e.target.result;
+    scanFileData = dataUrl.split(',')[1];   // só o base64
+    scanFileType = file.type || 'image/jpeg';
+
+    // preview
+    document.getElementById('scan-preview-img').src = dataUrl;
+    document.getElementById('scan-preview-wrap').style.display = 'block';
+    document.getElementById('scan-drop-zone').style.display = 'none';
+
+    // habilitar botão
+    document.getElementById('scan-btn-analyze').disabled = false;
+    document.getElementById('scan-btn-analyze').style.opacity = '1';
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearScanFile() {
+  scanFileData = null; scanFileType = null;
+  document.getElementById('scan-file-input').value = '';
+  document.getElementById('scan-preview-wrap').style.display = 'none';
+  document.getElementById('scan-drop-zone').style.display = 'block';
+  document.getElementById('scan-btn-analyze').disabled = true;
+  document.getElementById('scan-btn-analyze').style.opacity = '0.5';
+  document.getElementById('scan-result-wrap').style.display = 'none';
+  document.getElementById('scan-status-wrap').style.display = 'none';
+}
+
+function setScanStatus(type, text) {
+  const wrap = document.getElementById('scan-status-wrap');
+  const box  = document.getElementById('scan-status-box');
+  const spinner = document.getElementById('scan-spinner');
+  const label   = document.getElementById('scan-status-text');
+  wrap.style.display = 'block';
+  box.className = 'scan-status ' + type;
+  spinner.style.display = type === 'loading' ? 'block' : 'none';
+  label.textContent = text;
+}
+
+async function runScanAnalysis() {
+  if (!scanFileData) return;
+
+  const g = games[activeGameIdx];
+  if (!g) return;
+
+  scanTargetSide = document.getElementById('scan-side').value;
+  const teamName = scanTargetSide === 'home' ? g.home : g.away;
+  const teamFlag = scanTargetSide === 'home' ? (g.homeFlag||'') : (g.awayFlag||'');
+
+  // UI — carregando
+  document.getElementById('scan-btn-analyze').disabled = true;
+  document.getElementById('scan-btn-analyze').style.opacity = '0.5';
+  document.getElementById('scan-result-wrap').style.display = 'none';
+
+  setScanStatus('loading', 'Enviando imagem para análise...');
+
+  const prompt = `Você é um especialista em futebol. Analise esta imagem de escalação oficial de um jogo.
+
+Extraia SOMENTE os jogadores do time "${teamName}" ${teamFlag}.
+
+Retorne APENAS um JSON válido, sem nenhum texto antes ou depois, sem markdown, sem \`\`\`. Formato exato:
+{
+  "team": "${teamName}",
+  "formation": "4-3-3",
+  "players": [
+    {"num": "1", "name": "Nome Sobrenome", "pos": "GOL"},
+    {"num": "5", "name": "Nome Sobrenome", "pos": "ZAG"}
+  ]
+}
+
+Regras:
+- Inclua apenas os 11 titulares
+- Campo "pos" use: GOL, ZAG, LAD, LAE, LAT, VOL, MED, ATA, ALD, ATE
+- Campo "num" é o número da camisa (string). Se não visível, use ""
+- Se a imagem mostrar dois times, pegue SOMENTE o time "${teamName}"
+- Se não conseguir identificar o time, retorne os 11 jogadores que conseguir ler`;
+
+  try {
+    setScanStatus('loading', 'Claude está lendo a imagem...');
+
+    const response = await fetch('/api/scan', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{
+          role: 'user',
+          content: [
+            {
+              type: 'image',
+              source: { type: 'base64', media_type: scanFileType, data: scanFileData }
+            },
+            { type: 'text', text: prompt }
+          ]
+        }]
+      })
+    });
+
+    if (!response.ok) throw new Error(`API error: ${response.status}`);
+
+    const data = await response.json();
+    const rawText = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
+
+    // limpar possíveis blocos markdown
+    const clean = rawText.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+
+    if (!parsed.players || !parsed.players.length) throw new Error('Nenhum jogador encontrado na imagem.');
+
+    scanParsedResult = parsed;
+    setScanStatus('success', `✓ ${parsed.players.length} jogadores identificados — formação ${parsed.formation || '?'}`);
+    renderScanResult(parsed, g);
+
+  } catch (err) {
+    console.error(err);
+    const msg = err.message.includes('JSON') ? 'Não foi possível ler a escalação. Tente uma imagem mais nítida.' : err.message;
+    setScanStatus('error', '✗ ' + msg);
+    document.getElementById('scan-btn-analyze').disabled = false;
+    document.getElementById('scan-btn-analyze').style.opacity = '1';
+  }
+}
+
+function renderScanResult(parsed, g) {
+  const posClass = p => {
+    if (!p) return '';
+    const u = p.toUpperCase();
+    if (u==='GOL') return 'pos-gk';
+    if (['ZAG','LAT','LAD','LAE'].includes(u)) return 'pos-df';
+    if (['VOL','MED','MED-VOL'].includes(u)) return 'pos-mf';
+    return 'pos-fw';
+  };
+
+  const teamFlag = scanTargetSide === 'home' ? (g.homeFlag||'') : (g.awayFlag||'');
+  const teamName = scanTargetSide === 'home' ? g.home : g.away;
+
+  let rows = parsed.players.map(p => `
+    <div class="player-row">
+      <span class="player-num">${escHtml(p.num||'—')}</span>
+      <span class="player-name">${escHtml(p.name)}</span>
+      ${p.pos ? `<span class="pos-badge ${posClass(p.pos)}">${p.pos}</span>` : ''}
+    </div>`).join('');
+
+  document.getElementById('scan-result-grid').innerHTML = `
+    <div>
+      <div class="lineup-team-header">${teamFlag} ${escHtml(teamName)} ${parsed.formation ? '· '+parsed.formation : ''}</div>
+      ${rows}
+    </div>`;
+
+  document.getElementById('scan-result-wrap').style.display = 'block';
+  document.getElementById('scan-btn-apply').style.display = '';
+  document.getElementById('scan-btn-analyze').style.display = 'none';
+}
+
+function applyScanResult() {
+  if (!scanParsedResult || activeGameIdx < 0) return;
+
+  const players = scanParsedResult.players.map(p => ({
+    num: p.num || '',
+    name: p.name,
+    pos: p.pos || ''
+  }));
+
+  if (scanTargetSide === 'home') {
+    games[activeGameIdx].lineupHome = players;
+    games[activeGameIdx].lineupHomeOfficial = true;
+  } else {
+    games[activeGameIdx].lineupAway = players;
+    games[activeGameIdx].lineupAwayOfficial = true;
+  }
+
+  saveData();
+  closeScannerModal();
+  renderMain();   // re-render para mostrar badge "oficial"
+}
+
+// ============================================================
 
 function escHtml(s) {
   if (!s) return '';
